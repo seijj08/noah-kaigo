@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ノアコンツェル様 性格・志向診断 (noah-kaigo)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--primary:#2A9D8F;--primary-dark:#1E7168;--primary-light:#E6F4F1;--accent:#1B4F72;--success:#27AE60;--warning:#F39C12;--danger:#E74C3C;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"Noto Sans","Noto Sans Myanmar","Myanmar Text","Padauk",Helvetica,Arial,sans-serif;margin:0;background:#F5F5F7;color:#1F2937;}
+.gradient-main{background:linear-gradient(135deg,#9AD5CB,#2A9D8F);}
+.btn-primary{background:#2A9D8F;color:#fff;border:none;padding:14px 20px;border-radius:12px;font-weight:600;font-size:16px;cursor:pointer;transition:all .2s;display:inline-block;text-align:center;font-family:inherit;}
+.btn-primary:hover{background:#1E7168;}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+.btn-secondary{background:#fff;color:#374151;border:1px solid #D1D5DB;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit;}
+.btn-sm{font-size:12px;padding:8px 12px;}
+.btn-block{width:100%;}
+.btn-danger{color:#DC2626;border-color:#FECACA;}
+.option-btn{display:block;width:100%;padding:16px;background:#fff;border:2px solid #E5E7EB;border-radius:12px;text-align:left;font-size:15px;cursor:pointer;transition:all .15s;margin-bottom:10px;line-height:1.7;font-family:inherit;color:#1F2937;}
+.option-btn:hover{border-color:#2A9D8F;background:#E6F4F1;}
+.option-btn.selected{border-color:#2A9D8F;background:#E6F4F1;color:#1E7168;font-weight:600;}
+.progress-bar{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(to right,#9AD5CB,#2A9D8F);transition:width .3s;}
+.input,.textarea,.select{width:100%;padding:14px;border:1px solid #D1D5DB;border-radius:10px;font-size:16px;background:#fff;font-family:inherit;color:#1F2937;}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:#2A9D8F;box-shadow:0 0 0 3px rgba(42,157,143,.15);}
+.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 4px rgba(0,0,0,.04);border:1px solid #E5E7EB;}
+.label{font-size:13px;font-weight:600;color:#4B5563;margin-bottom:6px;display:block;}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:11px;font-weight:600;}
+.tag-green{background:#D1FAE5;color:#065F46;}
+.tag-yellow{background:#FEF3C7;color:#92400E;}
+.tag-red{background:#FEE2E2;color:#991B1B;}
+.tag-blue{background:#DBEAFE;color:#1E40AF;}
+.tag-gray{background:#E5E7EB;color:#374151;}
+.tag-purple{background:#EDE9FE;color:#5B21B6;}
+.score-bar-bg{height:8px;background:#E5E7EB;border-radius:4px;overflow:hidden;}
+.score-bar-fill{height:100%;background:linear-gradient(to right,#9AD5CB,#2A9D8F);}
+.fade-in{animation:fadeIn .25s ease-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.quiz-container{max-width:520px;margin:0 auto;padding:0 16px;}
+.dashboard-container{max-width:1280px;margin:0 auto;padding:0 16px;}
+.tab-btn{padding:12px 0;border:none;background:none;font-size:13px;cursor:pointer;color:#6B7280;font-weight:500;border-bottom:2px solid transparent;font-family:inherit;}
+.tab-btn.active{color:#2A9D8F;font-weight:700;border-bottom-color:#2A9D8F;}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;overflow-y:auto;}
+.disclaimer{background:#FFFBEB;border:1px solid #FDE68A;color:#78350F;border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.6;}
+.chart-box{position:relative;height:300px;}
+.chart-box-sm{position:relative;height:200px;}
+table.plain{width:100%;border-collapse:collapse;font-size:12px;}
+table.plain th,table.plain td{padding:6px 8px;border-bottom:1px solid #F3F4F6;text-align:left;}
+table.plain th{font-size:11px;color:#6B7280;font-weight:600;}
+.print-only{display:none;}
+@media (max-width:760px){#grid-charts,#grid-fit{grid-template-columns:1fr!important;}}
+@media print{
+  nav,.no-print{display:none!important;}
+  body{background:#fff;color:#000;}
+  .print-only{display:block;}
+  .card{box-shadow:none;border:1px solid #D1D5DB;break-inside:avoid;page-break-inside:avoid;}
+  .dashboard-container{max-width:100%;padding:0;}
+  .answers-section{display:none;}
+  .answers-section.print-include{display:block;}
+  .answers-section details{display:block;}
+  .answers-section details summary{list-style:none;}
+  .answers-section details > div{display:block!important;}
+  #grid-charts,#grid-fit{grid-template-columns:1fr 1fr!important;}
+  .chart-box{height:260px;}
+  @page{size:A4;margin:14mm;}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+//==========================================================
+// 設定（管理者設定ゾーン）
+//==========================================================
+const CONFIG = {
+  // Supabase（既存プロジェクトを共用。テーブル名は noah_ で始まる）
+  // ここには Publishable(anon) キーだけを置く。service_role / secret キーは絶対に書かない。
+  SUPABASE_URL: 'https://klwmsyxxtmhxrsgstpen.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_7T6YHioA1egDVJmvF5hr0A_izm2wWYo',
+  TABLE_SUB: 'noah_submissions',
+  TABLE_MEM: 'noah_members',
+  // 管理画面ログイン: Supabase Auth のメール＋パスワード（パスワードをPINとして運用）
+  adminEmail: '',          // 空なら画面で入力（入力したものは端末に記憶）
+  teamMembers: ['前田','小島','柳','鈴木','松本','木下','宮崎','石橋','現地スタッフ'],
+  companyName: 'ノアコンツェル様',
+  appName: 'ノアコンツェル様 性格・志向診断',
+  appSubtitle: '特定技能介護 候補者プロファイル（noah-kaigo）',
+  version: '1.0'
+};
+const DISCLAIMER_JA='この診断は合否を決めるものではなく、面接を補う参考情報です。';
+const STORAGE_KEY='noah-kaigo-cache-v1';
+const SETTINGS_KEY='noah-kaigo-settings-v1';
+const PARAMS=new URLSearchParams(location.search);
+const MODE=PARAMS.get('mode')==='quiz'?'quiz':'admin';
+let LANG=['my','id'].includes(PARAMS.get('lang'))?PARAMS.get('lang'):null;
+
+const sb=(window.supabase&&CONFIG.SUPABASE_URL)?window.supabase.createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY):null;
+let sbSession=null;
+
+let settings=loadSettings();
+function loadSettings(){try{return JSON.parse(localStorage.getItem(SETTINGS_KEY))||{};}catch(e){return{};}}
+function saveSettings(){localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}
+function isLoggedIn(){return !!(sbSession&&settings.userName);}
+
+//==========================================================
+// 定義: 14特性 / 6注意点 / 4動機 / 7項目（ノアコンツェル様向け） / セクション
+//==========================================================
+const TRAITS={
+  consc:{ja:'誠実性・計画性'},
+  agree:{ja:'協調性'},
+  emo:  {ja:'情緒安定性'},
+  clean:{ja:'清潔感・整頓'},
+  extra:{ja:'外向性'},
+  rule: {ja:'規範意識'},
+  integ:{ja:'誠実・正直さ'},
+  comm: {ja:'コミュニケーション'},
+  resil:{ja:'ストレス耐性'},
+  empathy:{ja:'共感・思いやり'},
+  careAcc:{ja:'介助受容性'},
+  fin:  {ja:'金銭管理'},
+  long: {ja:'長期就労意欲（日本）'},
+  fam:  {ja:'家族との絆'}
+};
+const RISKS={
+  alc:    {ja:'飲酒習慣'},
+  smoke:  {ja:'喫煙'},
+  digi:   {ja:'スマホ依存傾向'},
+  avoid:  {ja:'対立回避傾向'},
+  impulse:{ja:'衝動性・短気'},
+  revenge:{ja:'見返し・復讐心'}
+};
+const DRIVES={
+  money:   {ja:'金銭ドライブ',color:'#F59E0B'},
+  prestige:{ja:'承認・プライドドライブ',color:'#EC4899'},
+  freedom: {ja:'自由ドライブ',color:'#8B5CF6'},
+  relation:{ja:'関係ドライブ',color:'#10B981'}
+};
+// 7項目: A=定着プラン(5) / B=訪問系ルート(2)
+const FIT={
+  day:   {ja:'日勤で安定して働きたい',short:'日勤安定',tiny:'日勤',group:'A'},
+  remit: {ja:'仕送り額と収入の整合',short:'仕送り整合',tiny:'仕送り',group:'A'},
+  cold:  {ja:'寒さと生活環境への適応',short:'寒冷適応',tiny:'寒さ',group:'A'},
+  team:  {ja:'協力して責任を持って働く',short:'協力・責任',tiny:'協力',group:'A'},
+  stay:  {ja:'同じ職場で長く働きたい',short:'同じ職場で長く',tiny:'定着',group:'A'},
+  earn:  {ja:'稼ぎたい意欲の強さ',short:'稼ぎたい意欲',tiny:'稼ぎ',group:'B'},
+  career:{ja:'キャリアアップ志向',short:'キャリア志向',tiny:'キャリア',group:'B'}
+};
+const FIT_A=['day','remit','cold','team','stay'];
+const FIT_B=['earn','career'];
+const SECTIONS={
+  '1':{ja:'日常習慣',my:'နေ့စဉ်အလေ့အထ',id:'Kebiasaan harian'},
+  '2':{ja:'対人関係',my:'လူများနှင့် ဆက်ဆံရေး',id:'Hubungan dengan orang lain'},
+  '3':{ja:'ストレス対処',my:'စိတ်ဖိစီးမှု ကိုင်တွယ်ပုံ',id:'Menghadapi stres'},
+  '4':{ja:'金銭・計画性',my:'ငွေကြေးနှင့် အစီအစဉ်',id:'Uang dan perencanaan'},
+  '5':{ja:'余暇・生活様式',my:'အပန်းဖြေမှုနှင့် နေထိုင်မှုပုံစံ',id:'Waktu luang dan gaya hidup'},
+  '6':{ja:'価値観・仕事',my:'တန်ဖိုးထားမှုနှင့် အလုပ်',id:'Nilai dan pekerjaan'},
+  '7':{ja:'介護シチュエーション',my:'ပြုစုစောင့်ရှောက်မှု အခြေအနေများ',id:'Situasi perawatan'},
+  '8':{ja:'家族',my:'မိသားစု',id:'Keluarga'},
+  '10':{ja:'生活と働き方',my:'နေထိုင်မှုနှင့် အလုပ်လုပ်ပုံ',id:'Kehidupan dan cara bekerja'},
+  '9':{ja:'即答・本能',my:'လျင်မြန်စွာဖြေခြင်း (ပင်ကိုစိတ်)',id:'Jawaban cepat (naluri)'}
+};
+const SECTION_ORDER=['1','2','3','4','5','6','7','8','10','9'];
+function timeLimitFor(q){return q.sec==='9'?8:q.sec==='10'?20:15;}
+
+// 質問定義: Q(id, sec, {ja,my,id}, [[{ja,my,id},{採点}], ...])
+const Q=(id,sec,text,opts)=>({id,sec,text,options:opts.map(o=>({t:o[0],s:o[1]||{}}))});
+const QUESTIONS=[
+//----- セクション1: 日常習慣 -----
+Q("q1","1",{ja:"平日は何時に起きますか？",my:"အလုပ်ရက်များတွင် ပုံမှန်အားဖြင့် ဘယ်အချိန် အိပ်ရာထပါသလဲ။",id:"Pada hari kerja, jam berapa Anda biasanya bangun?"},[
+  [{ja:"5時より前",my:"မနက် ၅ နာရီ မတိုင်မီ",id:"Sebelum jam 5 pagi"},{consc:2}],
+  [{ja:"5〜7時",my:"၅～၇ နာရီကြား",id:"Antara jam 5–7"},{consc:1}],
+  [{ja:"7〜9時",my:"၇～၉ နာရီကြား",id:"Antara jam 7–9"},{}],
+  [{ja:"日や気分による",my:"နေ့နှင့် စိတ်အခြေအနေပေါ် မူတည်",id:"Tergantung mood / hari"},{consc:-2}]
+]),
+Q("q2","1",{ja:"起きて最初にすること？",my:"အိပ်ရာထပြီးနောက် ပထမဆုံး ဘာလုပ်ပါသလဲ။",id:"Hal pertama yang Anda lakukan setelah bangun?"},[
+  [{ja:"お祈り",my:"ဘုရားရှိခိုး / ဆုတောင်း",id:"Sholat / berdoa"},{rule:2,fam:1}],
+  [{ja:"シャワー・身支度",my:"ရေချိုး၍ သပ်ရပ်အောင်ပြင်ဆင်",id:"Mandi & rapikan diri"},{clean:2,consc:1}],
+  [{ja:"スマホ・SNSをチェック",my:"ဖုန်း / SNS ကြည့်",id:"Cek HP / media sosial"},{digi:2}],
+  [{ja:"朝食・コーヒー",my:"မနက်စာစား / ကော်ဖီသောက်",id:"Sarapan / minum kopi"},{}]
+]),
+Q("q3","1",{ja:"自分の部屋の片付け頻度は？",my:"ကိုယ့်အခန်းကို ဘယ်လောက်မကြာခဏ ရှင်းလင်းသပ်ရပ်အောင် လုပ်ပါသလဲ။",id:"Seberapa sering Anda merapikan kamar Anda sendiri?"},[
+  [{ja:"毎日",my:"နေ့တိုင်း",id:"Setiap hari"},{clean:2,consc:1}],
+  [{ja:"週2〜3回",my:"တစ်ပတ်လျှင် ၂～၃ ကြိမ်",id:"2–3 kali seminggu"},{clean:1}],
+  [{ja:"週1回",my:"တစ်ပတ်လျှင် တစ်ကြိမ်",id:"Sekali seminggu"},{}],
+  [{ja:"散らかった時だけ",my:"ရှုပ်ပွနေမှသာ",id:"Hanya kalau sudah berantakan"},{clean:-2}]
+]),
+Q("q4","1",{ja:"寝る前は普段…",my:"ညအိပ်ရာမဝင်မီ ပုံမှန်အားဖြင့်…",id:"Sebelum tidur malam, biasanya Anda…"},[
+  [{ja:"すぐ寝る・何もしない",my:"ဘာမှမလုပ်ဘဲ ချက်ချင်းအိပ်",id:"Langsung tidur tanpa apa-apa"},{consc:1}],
+  [{ja:"お菓子・牛乳を取る",my:"သွားရည်စာစား / နို့သောက်",id:"Makan camilan / minum susu"},{}],
+  [{ja:"読書・静かな音楽",my:"စာဖတ် / ငြိမ့်ညောင်းသောသီချင်း နားထောင်",id:"Baca buku / dengar musik tenang"},{}],
+  [{ja:"スマホ・SNS",my:"ဖုန်း / SNS သုံး",id:"Main HP atau sosmed"},{digi:2,consc:-1}]
+]),
+Q("q5","1",{ja:"身だしなみ・服装について",my:"အဝတ်အစားနှင့် သပ်ရပ်မှုကို ဘယ်လိုထိန်းသိမ်းပါသလဲ။",id:"Bagaimana Anda menjaga penampilan?"},[
+  [{ja:"家でも常に整える",my:"အိမ်မှာပင် အမြဲသပ်ရပ်အောင်နေ",id:"Selalu rapi, bahkan di rumah"},{clean:2}],
+  [{ja:"外出時・仕事時は整える",my:"အပြင်ထွက်ချိန် / အလုပ်ချိန်တွင် သပ်ရပ်အောင်နေ",id:"Rapi saat keluar atau kerja"},{clean:1}],
+  [{ja:"清潔ならOK",my:"သန့်ရှင်းရင် အဆင်ပြေ၊ သပ်ရပ်စရာမလို",id:"Yang penting bersih, tidak perlu rapi"},{}],
+  [{ja:"あまり気にしない",my:"သိပ်ဂရုမစိုက်ပါ",id:"Saya tidak terlalu peduli"},{clean:-2}]
+]),
+//----- セクション2: 対人関係 -----
+Q("q6","2",{ja:"同居人がキッチンを汚しっぱなし。あなたなら？",my:"အတူနေသူက မီးဖိုချောင်ကို ညစ်ပတ်စွာ ထားခဲ့သည်။ သင်ဘာလုပ်မလဲ။",id:"Teman sekamar Anda meninggalkan dapur kotor. Apa yang Anda lakukan?"},[
+  [{ja:"黙って自分で掃除",my:"ဘာမှမပြောဘဲ ကိုယ်တိုင်ရှင်းလင်း",id:"Bersihkan sendiri tanpa bicara apa-apa"},{agree:1,avoid:2}],
+  [{ja:"まず掃除→後で丁寧に話す",my:"အရင်ရှင်းလင်းပြီး နောက်မှ ယဉ်ကျေးစွာပြောဆို",id:"Bersihkan dulu, lalu bicarakan baik-baik"},{agree:2,comm:2,team:1}],
+  [{ja:"そのまま置いておく",my:"ဒီအတိုင်းထားပြီး သူရှင်းသည်အထိ စောင့်",id:"Tinggalkan saja, tunggu dia bersihkan"},{avoid:1}],
+  [{ja:"その場ではっきり注意",my:"ထိုအချိန်မှာပင် ပြတ်သားစွာ သတိပေး",id:"Tegur dia dengan tegas saat itu juga"},{comm:1}]
+]),
+Q("q7","2",{ja:"友人グループでの役割は？",my:"သူငယ်ချင်းအုပ်စုထဲတွင် သင့်အခန်းကဏ္ဍက များသောအားဖြင့်?",id:"Dalam grup teman, peran Anda biasanya?"},[
+  [{ja:"リーダー・決める側",my:"ခေါင်းဆောင် / ဆုံးဖြတ်ချက်ချသူ",id:"Saya yang memimpin / mengambil keputusan"},{extra:2,comm:1}],
+  [{ja:"アイディアを出す側",my:"အကြံဉာဏ်များ ပေးသူ",id:"Saya yang mengusulkan ide-ide"},{extra:1,comm:1}],
+  [{ja:"聞き役・調和役",my:"နားထောင်သူ၊ သဟဇာတဖြစ်အောင် ထိန်းသူ",id:"Saya pendengar dan penjaga harmoni"},{agree:2}],
+  [{ja:"流れに任せる",my:"အလိုက်သင့် လိုက်ပါသူ",id:"Saya ikut saja, tidak ribet"},{}]
+]),
+Q("q8","2",{ja:"同僚と意見が違うとき…",my:"လုပ်ဖော်ကိုင်ဖက်နှင့် သဘောထားကွဲလွဲသောအခါ…",id:"Saat pendapat Anda berbeda dengan rekan kerja…"},[
+  [{ja:"自分の意見を貫く",my:"ကိုယ့်အမြင်ကို ဆက်ကိုင်ထား၊ ဒါအရေးကြီးသည်",id:"Saya tetap pada pendapat, ini penting"},{comm:1}],
+  [{ja:"説明して折衷案を探す",my:"ရှင်းပြပြီး နှစ်ဦးလက်ခံနိုင်သောလမ်း ရှာ",id:"Jelaskan pendapat, cari titik tengah"},{comm:2,agree:1,team:1}],
+  [{ja:"相手に従う、争いたくない",my:"သူ့အလိုကျ လိုက်၊ ငြင်းခုံလိုစိတ်မရှိ",id:"Ikuti pendapatnya, tidak ingin ribut"},{agree:1,avoid:2}],
+  [{ja:"上司に判断を委ねる",my:"အထက်လူကြီးကို ဆုံးဖြတ်ခိုင်း",id:"Minta atasan yang memutuskan"},{rule:1}]
+]),
+Q("q9","2",{ja:"友人が悲しんでいるとき…",my:"သူငယ်ချင်းတစ်ဦး ဝမ်းနည်းနေချိန်…",id:"Saat ada teman yang sedang sedih…"},[
+  [{ja:"静かに聞く",my:"ဘာမှသိပ်မပြောဘဲ တိတ်ဆိတ်စွာ နားထောင်ပေး",id:"Dengarkan saja, tanpa banyak komentar"},{empathy:2,agree:1}],
+  [{ja:"助言する",my:"စိတ်သက်သာစေရန် အကြံဉာဏ်ပေး",id:"Beri saran agar dia merasa lebih baik"},{comm:1}],
+  [{ja:"気晴らしに連れ出す",my:"စိတ်ပြေလက်ပျောက်ဖြစ်စေရန် အပြင်ခေါ်ထွက်",id:"Ajak dia keluar agar lupakan masalah"},{extra:1}],
+  [{ja:"居心地悪く距離を置く",my:"အနေရခက်၍ ခပ်ခွာခွာနေ",id:"Saya tidak nyaman, biasanya menjauh"},{empathy:-2,agree:-1}]
+]),
+Q("q10","2",{ja:"新しい人と出会ったとき…",my:"လူသစ်နှင့် တွေ့ဆုံသောအခါ ပုံမှန်အားဖြင့်…",id:"Anda berkenalan dengan orang baru. Biasanya…"},[
+  [{ja:"自分から話しかけ質問する",my:"ကိုယ့်ဘက်က စကားစပြောပြီး များများမေးမြန်း",id:"Saya yang memulai bicara, banyak bertanya"},{extra:2}],
+  [{ja:"適度に話す",my:"သင့်တင့်လျောက်ပတ်စွာ စကားပြော",id:"Berinteraksi tapi tidak terlalu banyak"},{extra:1}],
+  [{ja:"相手から話しかけるのを待つ",my:"သူတို့ဘက်က စကားစပြောသည်အထိ စောင့်",id:"Menunggu sampai mereka bicara dulu"},{}],
+  [{ja:"新しい人は苦手",my:"လူသစ်များနှင့် သိပ်အဆင်မပြေ",id:"Saya tidak nyaman dengan orang baru"},{extra:-2}]
+]),
+Q("q11","2",{ja:"高齢者と話すことについてどう感じますか？",my:"သက်ကြီးရွယ်အိုများနှင့် စကားပြောရသည်ကို ဘယ်လိုခံစားရပါသလဲ။",id:"Bagaimana perasaan Anda saat berbicara dengan orang lanjut usia (lansia)?"},[
+  [{ja:"好き。昔の話を聞くのが楽しい",my:"ကြိုက်သည်။ သူတို့၏ဇာတ်လမ်းများ နားထောင်ရတာ ပျော်သည်",id:"Suka, senang mendengar cerita mereka"},{empathy:2,extra:1}],
+  [{ja:"自分の祖父母のようで心地よい",my:"ကိုယ့်အဘိုးအဘွားလို ခံစားရ၍ နွေးထွေးသည်",id:"Nyaman, seperti kakek-nenek sendiri"},{empathy:2,fam:1}],
+  [{ja:"普通",my:"သာမန်ပဲ",id:"Biasa saja"},{}],
+  [{ja:"少し苦手。話が遅く同じ話が多い",my:"နည်းနည်းခက်သည်။ စကားနှေးပြီး ထပ်ခါထပ်ခါပြောသည်",id:"Agak sulit, bicaranya lambat dan berulang"},{empathy:-2}]
+]),
+//----- セクション3: ストレス対処 -----
+Q("q12","3",{ja:"大切な試験に落ちた時の最初の反応",my:"အရေးကြီးသော စာမေးပွဲကျသောအခါ ပထမဆုံး တုံ့ပြန်မှုက?",id:"Anda gagal dalam ujian penting. Reaksi pertama?"},[
+  [{ja:"すぐ改善策を考える",my:"ဘယ်လိုပြုပြင်မလဲ ချက်ချင်းစဉ်းစား",id:"Langsung berpikir bagaimana memperbaiki"},{resil:2,consc:1,emo:1}],
+  [{ja:"少し落ち込んでから再挑戦",my:"ခဏစိတ်ဓာတ်ကျပြီး ပြန်ကြိုးစား",id:"Sedih sebentar, lalu coba lagi"},{resil:1}],
+  [{ja:"自分や他人に怒り",my:"ကိုယ့်ကိုယ်ကို သို့မဟုတ် သူများကို ဒေါသထွက်",id:"Marah pada diri sendiri atau orang lain"},{emo:-2,resil:-1}],
+  [{ja:"諦めて別の道を探す",my:"လက်လျှော့ပြီး တခြားလမ်းရှာ",id:"Menyerah, cari jalan lain"},{resil:-2,long:-1}]
+]),
+Q("q13","3",{ja:"上司に同僚の前で叱られたとき",my:"အထက်လူကြီးက လုပ်ဖော်ကိုင်ဖက်များရှေ့တွင် ကြိမ်းမောင်းသောအခါ…",id:"Atasan memarahi Anda di depan rekan. Anda…"},[
+  [{ja:"受け止めて改善努力",my:"လက်ခံပြီး ပြုပြင်ရန် ကြိုးစား",id:"Terima saran dan berusaha perbaiki"},{resil:2,agree:1,rule:1,emo:1}],
+  [{ja:"がっかりしつつもプロらしく振る舞う",my:"စိတ်မကောင်းသော်လည်း ပရော်ဖက်ရှင်နယ်ကျကျ ဆက်လုပ်",id:"Kecewa tapi tetap profesional"},{emo:2,resil:1}],
+  [{ja:"恥ずかしくて一日不機嫌",my:"ရှက်ပြီး တစ်နေကုန် စိတ်မကောင်းဖြစ်",id:"Malu dan tidak mood seharian"},{emo:-1}],
+  [{ja:"怒って帰りたくなる",my:"ဒေါသထွက်ပြီး အိမ်ပြန်ချင်",id:"Marah dan ingin pulang"},{emo:-2,resil:-2}]
+]),
+Q("q14","3",{ja:"強いストレスを感じたとき",my:"စိတ်ဖိစီးမှု ပြင်းထန်စွာခံစားရချိန် ပုံမှန်အားဖြင့်…",id:"Saat sangat stres, biasanya Anda…"},[
+  [{ja:"運動",my:"အားကစား / ကိုယ်လက်လှုပ်ရှားမှုလုပ်",id:"Olahraga / aktivitas fisik"},{resil:2}],
+  [{ja:"家族・友人と話す",my:"မိသားစု / သူငယ်ချင်းနှင့် စကားပြော",id:"Bicara dengan keluarga / teman"},{fam:1,comm:1}],
+  [{ja:"飲酒・喫煙・暴食",my:"အရက်သောက် / ဆေးလိပ်သောက် / အလွန်အကျွံစား",id:"Minum / merokok / makan banyak"},{alc:1,smoke:1,resil:-1}],
+  [{ja:"たくさん寝る・引きこもる",my:"အများကြီးအိပ် သို့မဟုတ် တစ်ယောက်တည်းနေ",id:"Tidur banyak atau menyendiri"},{}]
+]),
+Q("q15","3",{ja:"利用者への配膳を取り違えたとき",my:"သက်ကြီးရွယ်အိုအား အစားအစာ မှားပေးမိသည် (တခြားသူ၏ဟင်းနှင့်လွဲ)။ သင့်သဘောထားက?",id:"Anda salah menyajikan makanan kepada lansia (tertukar dengan orang lain). Sikap Anda?"},[
+  [{ja:"即報告して状況説明",my:"ဝန်ထမ်းအကြီးအကဲကို ချက်ချင်းအကြောင်းကြားပြီး အခြေအနေရှင်းပြ",id:"Lapor staf senior segera, jelaskan situasi"},{integ:2,comm:2,rule:1}],
+  [{ja:"食べる前ならこっそり戻す",my:"မစားရသေးလျှင် တိတ်တဆိတ် ပြန်လဲ",id:"Tukar kembali diam-diam kalau belum dimakan"},{integ:-1}],
+  [{ja:"聞かれてから説明",my:"မေးမှသာ ရှင်းပြ",id:"Tunggu sampai ditanya, baru jelaskan"},{integ:-1}],
+  [{ja:"バレないように",my:"မသိအောင် ဖုံးကွယ်ရန်ကြိုးစား",id:"Berusaha agar tidak ketahuan"},{integ:-2,rule:-2}]
+]),
+Q("q16","3",{ja:"怒りを感じたとき",my:"တစ်စုံတစ်ယောက်အပေါ် ဒေါသထွက်သောအခါ…",id:"Saat Anda marah pada seseorang…"},[
+  [{ja:"深呼吸して落ち着いてから話す",my:"အသက်ပြင်းပြင်းရှူပြီး စိတ်ငြိမ်အောင် အရင်ထား",id:"Tarik napas, tenangkan diri dulu"},{emo:2,resil:1}],
+  [{ja:"穏やかに不満を伝える",my:"မကျေနပ်ကြောင်း အေးဆေးစွာပြော",id:"Bilang dengan tenang bahwa saya kesal"},{emo:1,comm:1}],
+  [{ja:"我慢して話さない",my:"အောင့်အည်းသည်းခံပြီး မပြောပါ",id:"Pendam, tidak bicarakan"},{avoid:2}],
+  [{ja:"すぐ怒りを示す",my:"ဒေါသကို ချက်ချင်းပြ",id:"Langsung tunjukkan kemarahan"},{emo:-2}]
+]),
+//----- セクション4: 金銭・計画性 -----
+Q("q17","4",{ja:"給料を受け取って最初に",my:"ဒီလလစာ ရရှိပြီးနောက် ပထမဆုံး ဘာလုပ်မလဲ။",id:"Baru menerima gaji bulan ini. Hal pertama?"},[
+  [{ja:"大部分を貯金",my:"အများစုကို အရင်စုဆောင်း",id:"Tabung dulu sebagian besar"},{fin:2,consc:1,long:1}],
+  [{ja:"固定費→残りで生活",my:"ပေးရမည့်စရိတ်များ အရင်ရှင်း၊ ကျန်ငွေဖြင့် နေထိုင်",id:"Bayar kewajiban dulu, sisanya hidup"},{fin:1,consc:1}],
+  [{ja:"前から欲しかったものを購入",my:"ကြာကြာက လိုချင်နေသောပစ္စည်း ဝယ်",id:"Beli sesuatu yang lama saya inginkan"},{fin:-1}],
+  [{ja:"友人と祝賀会",my:"ဂုဏ်ပြုရန် သူငယ်ချင်းများနှင့် စားသောက်ပွဲလုပ်",id:"Makan-makan dengan teman untuk merayakan"},{fin:-2,extra:1}]
+]),
+Q("q18","4",{ja:"月末は普段",my:"လကုန်ချိန်တွင် ပုံမှန်အားဖြင့်…",id:"Pada akhir bulan, biasanya…"},[
+  [{ja:"常に貯金が残る",my:"စုဆောင်းငွေ အမြဲကျန်သည်",id:"Selalu ada tabungan tersisa"},{fin:2,long:1}],
+  [{ja:"ぎりぎり足りる",my:"အနိုင်နိုင်ဖြစ်သော်လည်း လောက်သည်",id:"Pas-pasan, tapi cukup"},{}],
+  [{ja:"たまに少し借りる",my:"လိုအပ်လျှင် အနည်းငယ်ချေး",id:"Pinjam sedikit kalau perlu"},{fin:-1}],
+  [{ja:"いつも足りず借りる",my:"အမြဲမလောက်၍ ချေးရသည်",id:"Selalu kehabisan, pinjam dulu"},{fin:-2}]
+]),
+Q("q19","4",{ja:"親しい友人に多額を借りたいと言われた時",my:"ရင်းနှီးသောသူငယ်ချင်းက ငွေအတော်များများ ချေးလိုသည်။ သင်…",id:"Teman dekat minta pinjam uang yang cukup besar. Anda…"},[
+  [{ja:"友達だから貸す",my:"သူငယ်ချင်းမို့ ချေးပေး",id:"Pinjamkan, dia teman saya"},{agree:1,fin:-1}],
+  [{ja:"返してくれる確信があれば貸す",my:"ပြန်ဆပ်မည်ဟု သေချာမှ ချေးပေး",id:"Pinjamkan jika yakin akan dikembalikan"},{}],
+  [{ja:"少額だけ貸す",my:"ပမာဏနည်းနည်းသာ ချေးပေး",id:"Pinjamkan jumlah lebih kecil saja"},{fin:1}],
+  [{ja:"関係を壊さないよう丁寧に断る",my:"ဆက်ဆံရေးမပျက်အောင် ယဉ်ကျေးစွာ ငြင်း",id:"Tolak baik-baik, ini bisa rusak hubungan"},{fin:2,consc:1}]
+]),
+//----- セクション5: 余暇・生活様式 -----
+Q("q20","5",{ja:"週末は普段",my:"စနေ၊ တနင်္ဂနွေတွင် ပုံမှန်အားဖြင့်…",id:"Akhir pekan biasanya Anda…"},[
+  [{ja:"家で休息・視聴・読書",my:"အိမ်မှာ အနားယူ / ရုပ်ရှင်ကြည့် / စာဖတ်",id:"Di rumah, istirahat / nonton / baca"},{}],
+  [{ja:"運動",my:"အားကစား / ကိုယ်လက်လှုပ်ရှားမှု",id:"Olahraga atau aktivitas fisik"},{resil:1}],
+  [{ja:"友人と外出",my:"သူငယ်ချင်းများနှင့် အပြင်ထွက်၊ စားသောက်၊ လျှောက်လည်",id:"Keluar dengan teman, makan, jalan-jalan"},{extra:2}],
+  [{ja:"賑やかな集まり・パーティ",my:"စည်ကားသောပွဲ / ပါတီများ တက်",id:"Berkumpul ramai / pesta"},{extra:1,alc:1}]
+]),
+Q("q21","5",{ja:"お酒について",my:"အရက်နှင့် ပတ်သက်၍…",id:"Tentang minuman beralkohol…"},[
+  [{ja:"全く飲まない",my:"လုံးဝ မသောက်ပါ",id:"Tidak minum sama sekali"},{rule:1}],
+  [{ja:"とても稀、行事の時だけ",my:"အလွန်ရှား၊ ပွဲလမ်းသဘင်တွင်သာ တစ်ခါတစ်ရံ",id:"Sangat jarang, kadang ikut acara"},{}],
+  [{ja:"月に数回",my:"တစ်လလျှင် အကြိမ်အနည်းငယ်",id:"Beberapa kali sebulan"},{alc:1}],
+  [{ja:"毎週かそれ以上",my:"အပတ်စဉ် သို့မဟုတ် ထို့ထက်ပို",id:"Setiap minggu atau lebih sering"},{alc:2,consc:-1}]
+]),
+Q("q22","5",{ja:"喫煙について",my:"ဆေးလိပ်နှင့် ပတ်သက်၍…",id:"Tentang merokok…"},[
+  [{ja:"吸わない",my:"လုံးဝ မသောက်ဖူးပါ",id:"Tidak pernah merokok"},{}],
+  [{ja:"試したが今は吸わない",my:"စမ်းဖူးသော်လည်း ယခု မသောက်တော့ပါ",id:"Pernah coba, sekarang tidak"},{}],
+  [{ja:"たまに吸う",my:"တစ်ခါတစ်ရံသောက် (စိတ်ဖိစီးချိန် / ပွဲများတွင်)",id:"Kadang merokok (saat stres / acara)"},{smoke:1}],
+  [{ja:"毎日",my:"နေ့တိုင်းသောက်",id:"Setiap hari"},{smoke:2}]
+]),
+Q("q23","5",{ja:"余暇に楽しむ趣味",my:"အားလပ်ချိန်တွင် နှစ်သက်သော ဝါသနာက?",id:"Hobi yang Anda nikmati di waktu luang?"},[
+  [{ja:"運動・フィットネス",my:"အားကစား / ကိုယ်ကာယကြံ့ခိုင်ရေး",id:"Olahraga / fitness"},{resil:1,consc:1}],
+  [{ja:"料理・園芸・手芸",my:"ဟင်းချက် / ဥယျာဉ်စိုက် / လက်မှုပညာ",id:"Memasak / berkebun / kerajinan"},{consc:1,clean:1}],
+  [{ja:"ゲーム・SNS・動画",my:"ဂိမ်း / SNS / ဗီဒီယိုကြည့်",id:"Game / sosmed / streaming"},{digi:2}],
+  [{ja:"友人と集う",my:"သူငယ်ချင်းများနှင့် စုဝေး",id:"Berkumpul dengan teman"},{extra:1}]
+]),
+//----- セクション6: 価値観・仕事 -----
+Q("q24","6",{ja:"職場で最も大切なこと",my:"အလုပ်ခွင်တွင် သင့်အတွက် အရေးအကြီးဆုံးအရာက?",id:"Apa yang paling penting bagi Anda di tempat kerja?"},[
+  [{ja:"給料と手当",my:"ကောင်းသောလစာနှင့် ထောက်ပံ့ကြေး",id:"Gaji dan tunjangan yang baik"},{earn:1}],
+  [{ja:"良い同僚と調和",my:"ကောင်းသောလုပ်ဖော်ကိုင်ဖက်နှင့် သဟဇာတ",id:"Rekan kerja yang baik dan harmoni"},{agree:2}],
+  [{ja:"学び成長できる",my:"သင်ယူ၍ တိုးတက်နိုင်ခြင်း",id:"Bisa belajar dan berkembang"},{consc:1,long:1}],
+  [{ja:"長期的に安定した仕事",my:"ရေရှည်တည်ငြိမ်သော အလုပ်",id:"Pekerjaan stabil jangka panjang"},{long:2,consc:1,stay:1}]
+]),
+Q("q25","6",{ja:"上司の指示が不合理だと思ったとき",my:"အထက်လူကြီး၏ ညွှန်ကြားချက်ကို မသင့်လျော်ဟု ထင်သောအခါ…",id:"Atasan memberi instruksi yang menurut Anda tidak masuk akal. Anda…"},[
+  [{ja:"従う、理由があるはず",my:"လိုက်နာမည်။ သူ့မှာ အကြောင်းပြချက် ရှိမည်",id:"Tetap ikuti, dia pasti punya alasan"},{agree:1,rule:2}],
+  [{ja:"まず従い後で丁寧に質問",my:"အရင်လိုက်နာပြီး နောက်မှ ယဉ်ကျေးစွာမေး",id:"Ikuti dulu, tanyakan baik-baik nanti"},{comm:2,rule:1}],
+  [{ja:"その場で理由を聞く",my:"ဘာကြောင့်လဲ ချက်ချင်းမေး",id:"Tanyakan langsung mengapa demikian"},{comm:1}],
+  [{ja:"おかしいと思えば拒否",my:"မှားသည်ဟုထင်လျှင် ငြင်းဆန်",id:"Tolak kalau menurut saya salah"},{rule:-1}]
+]),
+Q("q26","6",{ja:"日本で何年働きたいか",my:"ဂျပန်တွင် ဘယ်လောက်ကြာကြာ အလုပ်လုပ်လိုပါသလဲ။",id:"Berapa lama Anda ingin bekerja di Jepang?"},[
+  [{ja:"5年以上、可能なら永住",my:"၅ နှစ်နှင့်အထက်၊ ဖြစ်နိုင်လျှင် အမြဲတမ်း",id:"5 tahun atau lebih, kalau bisa selamanya"},{long:2,stay:1}],
+  [{ja:"3〜5年、その後帰国して起業",my:"၃～၅ နှစ်၊ ပြီးလျှင် ပြန်၍ စီးပွားရေးလုပ်",id:"3–5 tahun, lalu pulang untuk usaha"},{long:1,consc:1}],
+  [{ja:"1〜3年、資金集め",my:"၁～၃ နှစ်၊ အရင်းအနှီး စုဆောင်း",id:"1–3 tahun, mengumpulkan modal"},{}],
+  [{ja:"状況による",my:"အခြေအနေကြည့်မည်",id:"Lihat situasi nanti"},{long:-1,stay:-1}]
+]),
+Q("q27","6",{ja:"同僚が利用者に乱暴に接しているのを見たとき",my:"လုပ်ဖော်ကိုင်ဖက်က သက်ကြီးရွယ်အိုအား ကြမ်းတမ်းစွာ ဆက်ဆံနေသည်ကို မြင်လျှင်…",id:"Anda melihat rekan kerja memperlakukan lansia dengan kasar. Anda…"},[
+  [{ja:"その場で止める・注意する",my:"ထိုအချိန်မှာပင် တားဆီး / သတိပေး",id:"Hentikan / tegur saat itu juga"},{integ:2,comm:1,rule:1}],
+  [{ja:"すぐ上司・先輩に報告",my:"အထက်လူကြီး / အကြီးအကဲကို ချက်ချင်း အကြောင်းကြား",id:"Segera lapor ke atasan / staf senior"},{rule:2,integ:1}],
+  [{ja:"後で本人と二人で話す",my:"နောက်မှ သူနှင့်နှစ်ယောက်တည်း ယဉ်ကျေးစွာပြော",id:"Bicara berdua dengannya nanti, baik-baik"},{comm:1,integ:1,avoid:1}],
+  [{ja:"関与しない",my:"ဝင်မစွက်ပါ။ သူ့ကိစ္စသူ",id:"Tidak ikut campur, itu urusannya"},{integ:-2,rule:-2,empathy:-1}]
+]),
+//----- セクション7: 介護シチュエーション -----
+Q("q28","7",{ja:"認知症の利用者が同じ質問を10回。あなたは…",my:"မှတ်ဉာဏ်ချို့ယွင်းသော သက်ကြီးရွယ်အိုက တူညီသောမေးခွန်းကို ၁၀ ကြိမ် မေးလျှင်…",id:"Lansia dengan demensia bertanya hal yang sama 10 kali. Anda…"},[
+  [{ja:"毎回初めてのように穏やかに答える",my:"ပထမဆုံးအကြိမ်လိုပင် အကြိမ်တိုင်း စိတ်ရှည်စွာဖြေ",id:"Jawab dengan sabar setiap kali, seperti pertama kali"},{empathy:2,emo:2}],
+  [{ja:"答えつつ好きな話題へ切り替える",my:"ဖြေပြီး သူကြိုက်သော အကြောင်းအရာသို့ ပြောင်းရန်ကြိုးစား",id:"Jawab, lalu coba alihkan ke topik yang dia suka"},{empathy:1,comm:1}],
+  [{ja:"だんだん口調がきつくなる",my:"တဖြည်းဖြည်း လေသံကြမ်းလာ",id:"Lama-lama nada bicara saya jadi kasar"},{impulse:2,emo:-2,empathy:-1}],
+  [{ja:"聞こえないふりをする",my:"မကြားဟန်ဆောင်",id:"Pura-pura tidak dengar"},{empathy:-2,integ:-1}]
+]),
+Q("q29","7",{ja:"利用者が入浴を嫌がる。あなたは…",my:"သက်ကြီးရွယ်အိုက ရေချိုးရန် ငြင်းဆန်လျှင်…",id:"Lansia menolak mandi. Anda…"},[
+  [{ja:"理由を聞き、気持ちが落ち着くのを待つ",my:"အကြောင်းရင်းမေးပြီး စိတ်ငြိမ်သည်အထိ စောင့်",id:"Tanya alasannya, tunggu perasaannya tenang"},{empathy:2,comm:2}],
+  [{ja:"好きな話をしてからゆっくり誘う",my:"သူကြိုက်သောအကြောင်း အရင်ပြောပြီး ဖြည်းဖြည်းချင်း ချော့ခေါ်",id:"Ajak bicara hal yang dia suka, lalu ajak pelan-pelan"},{empathy:2,comm:1}],
+  [{ja:"先輩・日本人職員に相談",my:"အကြီးအကဲ / ဂျပန်ဝန်ထမ်းနှင့် တိုင်ပင်",id:"Konsultasi dengan staf senior / perawat Jepang"},{rule:1,comm:1}],
+  [{ja:"予定なので少し強引に進める",my:"အချိန်ဇယားအတိုင်းမို့ အနည်းငယ် အတင်းလုပ်",id:"Paksa sedikit, karena itu sudah jadwalnya"},{empathy:-2,rule:-1}]
+]),
+Q("q30","7",{ja:"排泄介助（おむつ交換など）への正直な気持ちは？",my:"သက်ကြီးရွယ်အိုများ၏ အညစ်အကြေးကိစ္စ ကူညီခြင်း (Diaper လဲခြင်း စသည်) အပေါ် ရိုးသားစွာ ဘယ်လိုခံစားရသလဲ။",id:"Perasaan jujur Anda tentang membantu lansia buang air (ganti popok dll)?"},[
+  [{ja:"問題ない。大切な仕事の一部",my:"ပြဿနာမရှိပါ။ အလုပ်၏ အရေးကြီးသောအစိတ်အပိုင်း",id:"Tidak masalah, itu bagian penting dari pekerjaan"},{careAcc:2,integ:1}],
+  [{ja:"最初は大変でも必ず慣れる",my:"အစပိုင်းခက်နိုင်သော်လည်း သေချာပေါက် အသားကျလာမည်",id:"Awalnya mungkin sulit, tapi pasti terbiasa"},{careAcc:1}],
+  [{ja:"少し抵抗があるが挑戦する",my:"အနည်းငယ်ခက်သော်လည်း ကြိုးစားမည်",id:"Agak berat, tapi akan saya coba"},{}],
+  [{ja:"正直できれば避けたい",my:"ရိုးသားစွာပြောလျှင် ဖြစ်နိုင်လျှင် မလုပ်ချင်ပါ",id:"Sejujurnya saya tidak mau kalau bisa"},{careAcc:-2}]
+]),
+Q("q31","7",{ja:"夜勤について…",my:"ညဆိုင်း (night shift) နှင့် ပတ်သက်၍…",id:"Tentang kerja malam (night shift)…"},[
+  [{ja:"問題ない。体は丈夫",my:"ပြဿနာမရှိပါ။ ခန္ဓာကိုယ် ကျန်းမာသန်စွမ်းသည်",id:"Tidak masalah, badan saya kuat"},{resil:2,careAcc:1,career:1}],
+  [{ja:"休みが十分なら可能",my:"အနားယူချိန် လုံလောက်လျှင် လုပ်နိုင်သည်",id:"Bisa, asal ada waktu istirahat yang cukup"},{resil:1,consc:1}],
+  [{ja:"経験がなく少し不安",my:"မလုပ်ဖူးသေး၍ အနည်းငယ် စိုးရိမ်သည်",id:"Agak khawatir, belum pernah coba"},{}],
+  [{ja:"できれば避けたい",my:"ဖြစ်နိုင်လျှင် ရှောင်လိုသည်",id:"Kalau bisa saya hindari"},{resil:-1,long:-1,day:1}]
+]),
+Q("q32","7",{ja:"居室で利用者が転倒しているのを発見。最初にすること？",my:"အခန်းထဲတွင် သက်ကြီးရွယ်အို လဲကျနေသည်ကို တွေ့လျှင် ပထမဆုံး ဘာလုပ်မလဲ။",id:"Anda menemukan lansia terjatuh di kamar. Hal pertama yang Anda lakukan?"},[
+  [{ja:"状態を確認し、すぐ応援を呼び報告",my:"အခြေအနေစစ်ပြီး ချက်ချင်း အကူအညီခေါ်ကာ အကြောင်းကြား",id:"Cek kondisinya, segera panggil staf lain & lapor"},{rule:2,comm:2,emo:1}],
+  [{ja:"まず立たせてから報告",my:"အရင် ထူပေးပြီးမှ အကြောင်းကြား",id:"Bantu dia berdiri dulu, baru lapor"},{agree:1,rule:-1}],
+  [{ja:"慌ててどうしていいか分からない",my:"ကြောက်လန့်ပြီး ဘာလုပ်ရမှန်း မသိ",id:"Panik, tidak tahu harus berbuat apa"},{emo:-2}],
+  [{ja:"大丈夫そうなら報告しない",my:"အဆင်ပြေပုံရလျှင် အကြောင်းမကြားပါ",id:"Kalau kelihatan baik-baik saja, tidak perlu lapor"},{rule:-2,integ:-2}]
+]),
+Q("q33","7",{ja:"利用者に突然怒鳴られたとき…",my:"သက်ကြီးရွယ်အိုက ရုတ်တရက် ဒေါသထွက်၍ အော်ဟစ်လျှင်…",id:"Lansia tiba-tiba marah dan membentak Anda…"},[
+  [{ja:"落ち着いて対応。体調や不安のサインかも",my:"စိတ်ငြိမ်စွာ ဆက်ဆံ။ နေမကောင်း / စိုးရိမ်မှု၏ လက္ခဏာဖြစ်နိုင်",id:"Tetap tenang, mungkin dia sedang tidak nyaman"},{emo:2,empathy:2}],
+  [{ja:"まず謝り、ゆっくり話を聞く",my:"အရင်တောင်းပန်ပြီး ဖြည်းဖြည်း နားထောင်",id:"Minta maaf dulu, lalu tanya pelan-pelan"},{agree:1,comm:1}],
+  [{ja:"落ち込んで一日引きずる",my:"စိတ်ဓာတ်ကျပြီး တစ်နေကုန် စွဲနေ",id:"Sedih dan terpikir terus seharian"},{resil:-1}],
+  [{ja:"イラッとして言い返す",my:"စိတ်တိုပြီး ပြန်ပြောမိ",id:"Kesal dan membalas dengan nada tinggi"},{emo:-2,impulse:2}]
+]),
+Q("q34","7",{ja:"介護・看病の経験（祖父母・家族など）は？",my:"လူပြုစုစောင့်ရှောက်ဖူးသော အတွေ့အကြုံ (အဘိုးအဘွား၊ နာမကျန်းမိသားစုဝင် စသည်) ရှိပါသလား။",id:"Pengalaman Anda merawat orang (kakek-nenek, keluarga sakit, dll)?"},[
+  [{ja:"家族を直接介護・看病した経験あり",my:"မိသားစုဝင်ကို တိုက်ရိုက် ပြုစုစောင့်ရှောက်ဖူးသည်",id:"Pernah merawat keluarga secara langsung"},{careAcc:2,empathy:1,fam:1}],
+  [{ja:"手伝い程度の経験あり",my:"ကူညီပေးဖူးသည့် အဆင့်ရှိသည်",id:"Pernah membantu merawat"},{careAcc:1,fam:1}],
+  [{ja:"経験はないが学びたい",my:"မရှိသေးသော်လည်း သင်ယူလိုသည်",id:"Belum ada, tapi ingin belajar"},{long:1}],
+  [{ja:"経験がなく少し不安",my:"မရှိသေး၍ အနည်းငယ် ကြောက်သည်",id:"Belum ada, dan sedikit takut"},{}]
+]),
+Q("q35","7",{ja:"担当していた利用者が亡くなったとき…",my:"တစ်နေ့တွင် သင်ပြုစုစောင့်ရှောက်နေသော သက်ကြီးရွယ်အို ကွယ်လွန်သွားလျှင်…",id:"Suatu hari, lansia yang Anda rawat meninggal dunia. Anda…"},[
+  [{ja:"悲しいが、最期まで関われたことに感謝する",my:"ဝမ်းနည်းသော်လည်း နောက်ဆုံးအချိန်အထိ ပြုစုခွင့်ရခဲ့သည်ကို ကျေးဇူးတင်",id:"Sedih, tapi bersyukur bisa merawatnya sampai akhir"},{empathy:2,resil:1,emo:1}],
+  [{ja:"長く落ち込み、仕事が手につかない",my:"ကြာရှည်စွာ စိတ်ဓာတ်ကျပြီး အလုပ်ပြန်လုပ်ရ ခက်",id:"Sedih lama, sulit kembali bekerja"},{resil:-2}],
+  [{ja:"悲しくならないよう深く関わらないようにする",my:"ဝမ်းနည်းမှုမဖြစ်အောင် သိပ်မရင်းနှီးအောင် နေ",id:"Berusaha tidak terlalu dekat dengan lansia agar tidak sedih"},{empathy:-1,avoid:1}],
+  [{ja:"仕事の一部なので特に引きずらない",my:"အလုပ်၏ တစ်စိတ်တစ်ပိုင်းမို့ သိပ်စွဲမနေပါ",id:"Itu bagian dari pekerjaan, tidak terlalu terpikir"},{emo:1,empathy:-1}]
+]),
+//----- セクション8: 家族 -----
+Q("q36","8",{ja:"日本滞在中に家族と連絡する頻度",my:"ဂျပန်ရောက်နေစဉ် မိသားစုနှင့် ဘယ်လောက်မကြာခဏ ဆက်သွယ်မလဲ။",id:"Seberapa sering Anda akan komunikasi dengan keluarga selama di Jepang?"},[
+  [{ja:"毎日",my:"နေ့တိုင်း",id:"Setiap hari"},{fam:2}],
+  [{ja:"週2〜3回",my:"တစ်ပတ်လျှင် ၂～၃ ကြိမ်",id:"2–3 kali seminggu"},{fam:1}],
+  [{ja:"週1回",my:"တစ်ပတ်လျှင် တစ်ကြိမ်",id:"Sekali seminggu"},{}],
+  [{ja:"大事な時だけ",my:"အရေးကြီးမှသာ",id:"Hanya kalau ada hal penting"},{fam:-1}]
+]),
+Q("q37","8",{ja:"日本での就労への家族の支援度",my:"ဂျပန်တွင် အလုပ်လုပ်ရန် မိသားစု၏ ထောက်ခံမှုက?",id:"Dukungan keluarga atas Anda bekerja di Jepang?"},[
+  [{ja:"全面支援",my:"မိသားစုက အပြည့်အဝ ထောက်ခံသည်",id:"Keluarga sepenuhnya mendukung"},{fam:2,long:1}],
+  [{ja:"支援しつつ少し心配",my:"ထောက်ခံသော်လည်း အနည်းငယ် စိုးရိမ်ကြသည်",id:"Mendukung tapi sedikit khawatir"},{fam:1}],
+  [{ja:"反対者がいる",my:"သဘောမတူသူ ရှိသည်",id:"Ada anggota yang tidak setuju"},{fam:-1,long:-1}],
+  [{ja:"多くが反対",my:"အများစုက ကန့်ကွက်ကြသည်",id:"Banyak yang menentang"},{fam:-2,long:-2}]
+]),
+Q("q38","8",{ja:"給料の何%を家族へ仕送り予定？",my:"လစာ၏ ဘယ်လောက်ရာခိုင်နှုန်းကို မိသားစုထံ ပို့မလဲ။",id:"Berapa persen gaji akan Anda kirim ke keluarga?"},[
+  [{ja:"50%以上",my:"၅၀% နှင့်အထက်",id:"50% atau lebih"},{fam:2,fin:1,long:1,remit:-1}],
+  [{ja:"30〜50%",my:"၃၀～၅၀%",id:"30–50%"},{fam:1,fin:1}],
+  [{ja:"10〜30%",my:"၁၀～၃၀%",id:"10–30%"},{remit:1}],
+  [{ja:"10%未満 / なし",my:"၁၀% အောက် / မပို့ပါ",id:"Kurang dari 10% atau tidak"},{fam:-1}]
+]),
+//----- セクション10: 生活と働き方（ノアコンツェル様向け追加） -----
+Q("q49","10",{ja:"寒い土地で暮らした経験はありますか？",my:"ဆောင်းရာသီ အေးသောနေရာတွင် နေထိုင်ခဲ့ဖူးပါသလား။",id:"Apakah Anda pernah tinggal di daerah yang dingin?"},[
+  [{ja:"雪が降る土地で冬を過ごしたことがある",my:"ဆီးနှင်းကျသော နေရာတွင် ဆောင်းရာသီ ဖြတ်သန်းခဲ့ဖူးသည်",id:"Pernah melewati musim dingin di tempat bersalju"},{cold:2}],
+  [{ja:"朝晩が15度以下になる地域に住んだことがある",my:"မနက်နှင့်ည ၁၅ ဒီဂရီအောက် အေးသော နေရာတွင် နေထိုင်ခဲ့ဖူးသည်",id:"Pernah tinggal di daerah yang suhunya di bawah 15°C pada pagi dan malam"},{cold:1}],
+  [{ja:"ない。でも寒さはどちらかといえば好きだ",my:"မရှိပါ။ သို့သော် အေးသောရာသီကို ကြိုက်သည်",id:"Belum pernah, tetapi saya cenderung suka udara dingin"},{}],
+  [{ja:"ない。寒いのは苦手だ",my:"မရှိပါ။ အေးသောရာသီကို မကြိုက်ပါ",id:"Belum pernah, dan saya tidak tahan dingin"},{cold:-2}]
+]),
+Q("q50","10",{ja:"暑い日と寒い日、体が動きやすいのはどちらですか？",my:"ပူသောရက်နှင့် အေးသောရက်၊ ဘယ်ရက်မျိုးတွင် ကိုယ်ခန္ဓာ ပိုလှုပ်ရှားလို့ကောင်းပါသလဲ။",id:"Hari panas atau hari dingin, kapan tubuh Anda lebih mudah bergerak?"},[
+  [{ja:"寒い日の方が動きやすい",my:"အေးသောရက်တွင် ပိုလုပ်လို့ကောင်းသည်",id:"Lebih mudah bergerak saat hari dingin"},{cold:2}],
+  [{ja:"どちらも同じ",my:"နှစ်မျိုးလုံး အတူတူပင်",id:"Keduanya sama saja"},{cold:1}],
+  [{ja:"暑い日の方が動きやすいが、寒くても仕事はできる",my:"ပူသောရက်တွင် ပိုကောင်းသော်လည်း အေးလျှင်လည်း အလုပ်လုပ်နိုင်သည်",id:"Lebih mudah saat panas, tetapi tetap bisa bekerja saat dingin"},{}],
+  [{ja:"寒いと体が動かず、気分も落ちる",my:"အေးလျှင် ကိုယ်ခန္ဓာ မလှုပ်ရှားနိုင်ဘဲ စိတ်လည်း ကျသည်",id:"Saat dingin tubuh sulit bergerak dan suasana hati menurun"},{cold:-2}]
+]),
+Q("q51","10",{ja:"冬、雪道を30分歩いて通勤する毎日を想像してください。どう感じますか？",my:"ဆောင်းရာသီတွင် ဆီးနှင်းလမ်းကို နေ့တိုင်း မိနစ် ၃၀ လမ်းလျှောက်၍ အလုပ်သွားရမည်ဟု စဉ်းစားကြည့်ပါ။ ဘယ်လိုခံစားရပါသလဲ။",id:"Bayangkan setiap hari di musim dingin Anda berjalan kaki 30 menit di jalan bersalju ke tempat kerja. Bagaimana perasaan Anda?"},[
+  [{ja:"服装と靴を準備すれば問題ない",my:"အဝတ်အစားနှင့် ဖိနပ် ပြင်ဆင်ထားလျှင် ပြဿနာမရှိပါ",id:"Tidak masalah asalkan pakaian dan sepatu disiapkan"},{cold:2,consc:1}],
+  [{ja:"最初はつらいが、慣れると思う",my:"အစတွင် ခက်ခဲမည်ဖြစ်သော်လည်း အသားကျလာမည်ဟု ထင်သည်",id:"Awalnya berat, tetapi saya rasa akan terbiasa"},{cold:1}],
+  [{ja:"不便なので、できれば職場の近くに住みたい",my:"အဆင်မပြေသောကြောင့် ဖြစ်နိုင်လျှင် အလုပ်နှင့် နီးသောနေရာတွင် နေလိုသည်",id:"Tidak praktis, jadi kalau bisa saya ingin tinggal dekat tempat kerja"},{}],
+  [{ja:"毎日は無理。冬は休みがちになるかもしれない",my:"နေ့တိုင်းတော့ မဖြစ်နိုင်ပါ။ ဆောင်းရာသီတွင် အလုပ်ပျက်တတ်နိုင်သည်",id:"Tidak mungkin setiap hari; di musim dingin saya mungkin sering absen"},{cold:-2,stay:-1}]
+]),
+Q("q52","10",{ja:"冬は暖房費が月に15,000円かかると知りました。あなたはどうしますか？",my:"ဆောင်းရာသီတွင် အပူပေးစက်ကုန်ကျစရိတ် တစ်လလျှင် ယန်း ၁၅,၀၀၀ ကျသင့်မည်ဟု သိရသည်။ ဘာလုပ်မလဲ။",id:"Anda tahu biaya pemanas di musim dingin sekitar 15.000 yen per bulan. Apa yang Anda lakukan?"},[
+  [{ja:"冬が来る前から毎月少しずつ貯めて備える",my:"ဆောင်းရာသီ မရောက်မီ လစဉ် အနည်းငယ် စုဆောင်းထားသည်",id:"Menabung sedikit demi sedikit setiap bulan sebelum musim dingin"},{cold:1,fin:2}],
+  [{ja:"食費や娯楽を減らしてまかなう",my:"အစားအသောက်နှင့် အပျော်အပါး စရိတ် လျှော့၍ ဖြေရှင်းသည်",id:"Mengurangi biaya makan dan hiburan untuk menutupinya"},{cold:1,fin:1}],
+  [{ja:"暖房をあまり使わず我慢する",my:"အပူပေးစက်ကို သိပ်မသုံးဘဲ ခံသည်",id:"Menahan diri dengan tidak banyak memakai pemanas"},{cold:-1}],
+  [{ja:"その分、仕送りを減らすことになる",my:"ထိုပမာဏ အိမ်ပို့ငွေ လျှော့ရမည်",id:"Terpaksa mengurangi kiriman uang ke keluarga sebesar itu"},{remit:-1}]
+]),
+Q("q53","10",{ja:"夜勤があり月3万円多い職場と、夜勤がなく今と同じ給料の職場。どちらを選びますか？",my:"ညဆိုင်းရှိ၍ တစ်လ ယန်း ၃၀,၀၀၀ ပိုရသော အလုပ်နှင့် ညဆိုင်းမရှိ၍ ယခုလစာအတိုင်း ရသော အလုပ်။ ဘယ်ဟာ ရွေးမလဲ။",id:"Tempat kerja dengan shift malam dan gaji lebih 30.000 yen per bulan, atau tanpa shift malam dengan gaji sama seperti sekarang. Mana yang Anda pilih?"},[
+  [{ja:"夜勤なし。体と生活リズムを守りたい",my:"ညဆိုင်းမရှိ။ ကျန်းမာရေးနှင့် နေ့စဉ်ဘဝပုံစံကို ထိန်းလိုသည်",id:"Tanpa shift malam; saya ingin menjaga kesehatan dan ritme hidup"},{day:2}],
+  [{ja:"夜勤なし。ただし他の方法で収入を増やしたい",my:"ညဆိုင်းမရှိ။ သို့သော် အခြားနည်းဖြင့် ဝင်ငွေတိုးလိုသည်",id:"Tanpa shift malam, tetapi ingin menambah penghasilan dengan cara lain"},{day:1,earn:1}],
+  [{ja:"夜勤あり。3万円は大きい",my:"ညဆိုင်းရှိ။ ယန်း ၃၀,၀၀၀ သည် ကြီးမားသည်",id:"Dengan shift malam; 30.000 yen itu besar"},{day:-2,earn:2}],
+  [{ja:"夜勤あり。経験を積みたい",my:"ညဆိုင်းရှိ။ အတွေ့အကြုံ ရလိုသည်",id:"Dengan shift malam; saya ingin menambah pengalaman"},{day:-1,career:2}]
+]),
+Q("q54","10",{ja:"デイサービスの勤務は朝8時半から夕方5時半ごろで、夜勤はありません。この働き方をどう思いますか？",my:"Day Service တွင် အလုပ်ချိန်သည် မနက် ၈:၃၀ မှ ညနေ ၅:၃၀ ခန့်ဖြစ်၍ ညဆိုင်း မရှိပါ။ ဤအလုပ်ပုံစံကို ဘယ်လိုထင်ပါသလဲ။",id:"Jam kerja di day service sekitar pukul 8.30 pagi sampai 5.30 sore, tanpa shift malam. Bagaimana pendapat Anda tentang pola kerja ini?"},[
+  [{ja:"ちょうどいい。長く続けやすい",my:"အသင့်တော်ဆုံးပင်။ ရေရှည် လုပ်လို့ကောင်းသည်",id:"Pas sekali; mudah untuk bertahan lama"},{day:2,stay:1}],
+  [{ja:"良いが、収入が物足りないかもしれない",my:"ကောင်းသော်လည်း ဝင်ငွေ မလုံလောက်ဖြစ်နိုင်သည်",id:"Bagus, tetapi penghasilannya mungkin kurang"},{day:1,earn:1}],
+  [{ja:"慣れればよいと思う",my:"အသားကျလျှင် အဆင်ပြေမည်ဟု ထင်သည်",id:"Saya rasa akan baik setelah terbiasa"},{}],
+  [{ja:"夜勤で稼げないのは残念",my:"ညဆိုင်းဖြင့် ငွေမရှာနိုင်သည်မှာ စိတ်မကောင်းပါ",id:"Sayang tidak bisa menambah penghasilan dari shift malam"},{day:-2,earn:1}]
+]),
+Q("q55","10",{ja:"毎月、家族に送る必要がある金額はいくらですか？（約束している額）",my:"လစဉ် မိသားစုထံ ပို့ရန် လိုအပ်သော ငွေပမာဏ ဘယ်လောက်လဲ။ (ကတိပေးထားသော ပမာဏ)",id:"Berapa jumlah uang yang harus Anda kirim ke keluarga setiap bulan? (jumlah yang sudah dijanjikan)"},[
+  [{ja:"3万円以下、または決まっていない",my:"ယန်း ၃၀,၀၀၀ အောက်၊ သို့မဟုတ် မသတ်မှတ်ရသေးပါ",id:"Di bawah 30.000 yen, atau belum ditentukan"},{remit:2}],
+  [{ja:"3万〜6万円",my:"ယန်း ၃၀,၀၀၀ ～ ၆၀,၀၀၀",id:"30.000–60.000 yen"},{remit:1}],
+  [{ja:"6万〜10万円",my:"ယန်း ၆၀,၀၀၀ ～ ၁၀၀,၀၀၀",id:"60.000–100.000 yen"},{remit:-1}],
+  [{ja:"10万円以上",my:"ယန်း ၁၀၀,၀၀၀ အထက်",id:"Lebih dari 100.000 yen"},{remit:-2,earn:1}]
+]),
+Q("q56","10",{ja:"手取りが17万円で、家賃・光熱費・食費・通信費に9万円かかります。残りの8万円をどう使いますか？",my:"လက်ထဲရောက်လစာ ယန်း ၁၇၀,၀၀၀ ဖြစ်၍ အိမ်လခ၊ မီး/ရေ/ဓာတ်ငွေ့၊ စားစရိတ်၊ ဖုန်းခ စုစုပေါင်း ယန်း ၉၀,၀၀၀ ကျသင့်သည်။ ကျန် ယန်း ၈၀,၀၀၀ ကို ဘယ်လိုသုံးမလဲ။",id:"Gaji bersih 170.000 yen; sewa, listrik/gas/air, makan, dan pulsa menghabiskan 90.000 yen. Sisa 80.000 yen Anda gunakan untuk apa?"},[
+  [{ja:"仕送り3〜4万円。残りは貯金と自分の生活",my:"အိမ်ပို့ငွေ ယန်း ၃～၄ သောင်း။ ကျန်သည်ကို စုဆောင်းခြင်းနှင့် ကိုယ်ပိုင်သုံးစရိတ်",id:"Kirim 30.000–40.000 yen; sisanya untuk tabungan dan kebutuhan sendiri"},{remit:2,fin:1}],
+  [{ja:"仕送り5〜6万円。自分の生活は最小限",my:"အိမ်ပို့ငွေ ယန်း ၅～၆ သောင်း။ ကိုယ်ပိုင်သုံးစရိတ် အနည်းဆုံး",id:"Kirim 50.000–60.000 yen; kebutuhan sendiri seminimal mungkin"},{remit:1,fin:1}],
+  [{ja:"できるだけ全額を仕送りする",my:"တတ်နိုင်သမျှ အားလုံးကို အိမ်ပို့သည်",id:"Mengirim semuanya sebisa mungkin"},{remit:-1,fam:1}],
+  [{ja:"8万円では足りない。副業や残業を探す",my:"ယန်း ၈၀,၀၀၀ မလောက်ပါ။ အပိုအလုပ် သို့မဟုတ် အချိန်ပိုအလုပ် ရှာမည်",id:"80.000 yen tidak cukup; saya akan mencari kerja sampingan atau lembur"},{remit:-2,earn:2}]
+]),
+Q("q57","10",{ja:"仕送りが約束の額に足りない月があったら、どうしますか？",my:"ကတိပေးထားသော အိမ်ပို့ငွေ မလောက်သောလ ရှိလျှင် ဘာလုပ်မလဲ။",id:"Jika ada bulan di mana kiriman uang tidak mencapai jumlah yang dijanjikan, apa yang Anda lakukan?"},[
+  [{ja:"家族に事情を説明し、翌月に調整する",my:"မိသားစုကို အခြေအနေ ရှင်းပြ၍ နောက်လတွင် ညှိသည်",id:"Menjelaskan keadaan kepada keluarga dan menyesuaikan bulan berikutnya"},{remit:1,comm:1,fin:1}],
+  [{ja:"自分の食費を削って送る",my:"ကိုယ့်စားစရိတ် လျှော့၍ ပို့သည်",id:"Mengurangi biaya makan sendiri untuk tetap mengirim"},{fam:1}],
+  [{ja:"休日に別の仕事を探す",my:"နားရက်တွင် အခြားအလုပ် ရှာသည်",id:"Mencari pekerjaan lain di hari libur"},{remit:-1,earn:2}],
+  [{ja:"もっと給料の高い職場を探し始める",my:"လစာ ပိုမြင့်သော အလုပ် စရှာသည်",id:"Mulai mencari tempat kerja dengan gaji lebih tinggi"},{remit:-2,stay:-2,earn:1}]
+]),
+Q("q58","10",{ja:"自分の担当は終わりましたが、同僚が入浴介助で遅れています。あなたは？",my:"ကိုယ့်တာဝန် ပြီးသွားသော်လည်း လုပ်ဖော်ကိုင်ဖက်သည် ရေချိုးပေးရာတွင် နောက်ကျနေသည်။ သင် ဘာလုပ်မလဲ။",id:"Tugas Anda sudah selesai, tetapi rekan kerja masih tertinggal saat membantu memandikan. Apa yang Anda lakukan?"},[
+  [{ja:"声をかけて手伝う",my:"မေးကြည့်၍ ကူညီသည်",id:"Menawarkan diri dan membantu"},{team:2,agree:1}],
+  [{ja:"上司に「手伝った方がいいか」確認する",my:"အထက်လူကြီးကို ကူညီသင့်မသင့် မေးသည်",id:"Bertanya kepada atasan apakah sebaiknya membantu"},{team:1,rule:1}],
+  [{ja:"自分の記録を先に終わらせる",my:"ကိုယ့်မှတ်တမ်းကို အရင်ပြီးစီးသည်",id:"Menyelesaikan catatan saya sendiri dulu"},{}],
+  [{ja:"自分の担当は終わったので休憩する",my:"ကိုယ့်တာဝန် ပြီးပြီဖြစ်၍ နားသည်",id:"Beristirahat karena tugas saya sudah selesai"},{team:-2}]
+]),
+Q("q59","10",{ja:"利用者の送迎時間の変更を、あなただけが聞いていました。あなたは？",my:"အသုံးပြုသူ၏ ကြိုပို့ချိန် ပြောင်းလဲမှုကို သင်တစ်ဦးတည်းသာ သိရှိထားသည်။ ဘာလုပ်မလဲ။",id:"Hanya Anda yang mendengar perubahan jadwal antar-jemput seorang pengguna layanan. Apa yang Anda lakukan?"},[
+  [{ja:"すぐ全員に共有し、ホワイトボードにも書く",my:"ချက်ချင်း အားလုံးကို အသိပေး၍ ဘုတ်ပြားတွင်လည်း ရေးသည်",id:"Segera memberi tahu semua orang dan menulisnya di papan tulis"},{team:2,comm:1,consc:1}],
+  [{ja:"関係する人にだけ伝える",my:"သက်ဆိုင်သူများကိုသာ ပြောသည်",id:"Memberi tahu hanya orang yang terkait"},{team:1}],
+  [{ja:"聞かれたら答える",my:"မေးမှ ပြောသည်",id:"Menjawab kalau ditanya"},{team:-1}],
+  [{ja:"自分の仕事ではないと思う",my:"ကိုယ့်အလုပ် မဟုတ်ဟု ထင်သည်",id:"Menurut saya itu bukan tugas saya"},{team:-2,integ:-1}]
+]),
+Q("q60","10",{ja:"入社して1年。別の会社から「月3万円高い給料で来ないか」と誘われました。",my:"အလုပ်ဝင်၍ ၁ နှစ်ပြည့်သည်။ အခြားကုမ္ပဏီက \"တစ်လ ယန်း ၃၀,၀၀၀ ပို ပေးမည်\" ဟု ခေါ်သည်။",id:"Sudah 1 tahun bekerja. Perusahaan lain mengajak Anda pindah dengan gaji 30.000 yen lebih tinggi per bulan."},[
+  [{ja:"今の職場に不満がなければ断る",my:"ယခုအလုပ်တွင် မကျေနပ်မှုမရှိလျှင် ငြင်းသည်",id:"Menolak jika tidak ada keluhan di tempat kerja sekarang"},{stay:2}],
+  [{ja:"上司に相談して、今の職場で続ける道を探す",my:"အထက်လူကြီးနှင့် တိုင်ပင်၍ ယခုအလုပ်တွင် ဆက်လုပ်နိုင်သောနည်း ရှာသည်",id:"Berkonsultasi dengan atasan dan mencari cara untuk tetap bertahan"},{stay:1,comm:1}],
+  [{ja:"条件を比べて、良ければ移る",my:"အခြေအနေ နှိုင်းယှဉ်၍ ကောင်းလျှင် ပြောင်းသည်",id:"Membandingkan kondisi; pindah jika lebih baik"},{stay:-1,earn:1}],
+  [{ja:"すぐに移る。収入が第一",my:"ချက်ချင်း ပြောင်းသည်။ ဝင်ငွေက အရေးအကြီးဆုံး",id:"Langsung pindah; penghasilan nomor satu"},{stay:-2,earn:2}]
+]),
+Q("q61","10",{ja:"3年後の自分の姿で、一番近いのは？",my:"၃ နှစ်အကြာ သင့်ပုံရိပ်နှင့် အနီးစပ်ဆုံးက ဘာလဲ။",id:"Gambaran diri Anda 3 tahun ke depan yang paling mendekati?"},[
+  [{ja:"同じ職場で、後輩を教える立場になっている",my:"တူညီသောအလုပ်တွင် အသစ်ဝင်သူများကို သင်ပေးသူ ဖြစ်နေသည်",id:"Masih di tempat kerja yang sama, menjadi orang yang membimbing junior"},{stay:2,career:1}],
+  [{ja:"同じ職場で、介護福祉士の資格の勉強をしている",my:"တူညီသောအလုပ်တွင် ပြုစုစောင့်ရှောက်မှု လက်မှတ် (Kaigo Fukushishi) အတွက် စာလေ့လာနေသည်",id:"Masih di tempat kerja yang sama, belajar untuk sertifikat Kaigo Fukushishi"},{stay:2,career:2}],
+  [{ja:"別の施設や訪問介護に移り、より高い収入を得ている",my:"အခြားဌာန သို့မဟုတ် အိမ်တိုင်ရာရောက် ပြုစုစောင့်ရှောက်မှုသို့ ပြောင်း၍ ဝင်ငွေ ပိုရနေသည်",id:"Pindah ke fasilitas lain atau layanan kunjungan rumah dengan penghasilan lebih tinggi"},{stay:-2,earn:1,career:1}],
+  [{ja:"介護以外の仕事に変わっている",my:"ပြုစုစောင့်ရှောက်မှု မဟုတ်သော အခြားအလုပ်သို့ ပြောင်းနေသည်",id:"Beralih ke pekerjaan selain perawatan lansia"},{stay:-2,long:-1}]
+]),
+Q("q62","10",{ja:"職場を変えることについて、あなたの考えに近いのは？",my:"အလုပ်ပြောင်းခြင်းနှင့် ပတ်သက်၍ သင့်အတွေးနှင့် နီးစပ်သည်မှာ။",id:"Tentang berpindah tempat kerja, pandangan Anda yang paling mendekati?"},[
+  [{ja:"一つの職場で信頼を積み上げる方が得だ",my:"အလုပ်တစ်ခုတည်းတွင် ယုံကြည်မှု တည်ဆောက်ခြင်းက ပိုအကျိုးရှိသည်",id:"Lebih menguntungkan membangun kepercayaan di satu tempat kerja"},{stay:2}],
+  [{ja:"困ったら変えてもいいが、まず3年は続ける",my:"ပြဿနာရှိလျှင် ပြောင်းနိုင်သော်လည်း အနည်းဆုံး ၃ နှစ် ဆက်လုပ်မည်",id:"Boleh pindah jika ada masalah, tetapi bertahan dulu minimal 3 tahun"},{stay:1}],
+  [{ja:"良い条件があれば1〜2年で変えるのは普通だ",my:"အခြေအနေကောင်းရှိလျှင် ၁～၂ နှစ်အတွင်း ပြောင်းခြင်းသည် ပုံမှန်ပင်",id:"Wajar pindah dalam 1–2 tahun kalau ada kondisi yang lebih baik"},{stay:-2}],
+  [{ja:"日本では職場を変える方が給料が上がりやすい",my:"ဂျပန်တွင် အလုပ်ပြောင်းလျှင် လစာ ပိုတက်လွယ်သည်",id:"Di Jepang, gaji lebih mudah naik dengan berpindah tempat kerja"},{stay:-1,earn:1}]
+]),
+Q("q63","10",{ja:"日曜日に急な出勤を頼まれ、手当が付きます。あなたは？",my:"တနင်္ဂနွေနေ့တွင် အရေးပေါ် အလုပ်ဆင်းရန် တောင်းဆိုခံရ၍ အပိုထောက်ပံ့ကြေး ရမည်။ ဘာလုပ်မလဲ။",id:"Anda diminta masuk mendadak pada hari Minggu dengan tunjangan tambahan. Apa yang Anda lakukan?"},[
+  [{ja:"予定がなければ出る。手当はうれしい",my:"အစီအစဉ်မရှိလျှင် ဆင်းမည်။ ထောက်ပံ့ကြေး ရသည်မှာ ဝမ်းသာသည်",id:"Masuk jika tidak ada rencana; tunjangannya menyenangkan"},{earn:2,team:1}],
+  [{ja:"チームが困っているなら出る。手当は二の次",my:"အဖွဲ့ အခက်တွေ့နေလျှင် ဆင်းမည်။ ထောက်ပံ့ကြေးက ဒုတိယ",id:"Masuk jika tim kesulitan; tunjangan nomor dua"},{team:2}],
+  [{ja:"休みは休みたい。断る",my:"နားရက်တွင် နားလိုသည်။ ငြင်းမည်",id:"Hari libur ingin istirahat; menolak"},{earn:-2,day:1}],
+  [{ja:"月に1回くらいなら出る",my:"တစ်လ တစ်ကြိမ်ခန့်ဆိုလျှင် ဆင်းမည်",id:"Masuk kalau hanya sekitar sekali sebulan"},{earn:1}]
+]),
+Q("q64","10",{ja:"お金についての考えで、一番近いのは？",my:"ငွေနှင့် ပတ်သက်၍ သင့်အတွေးနှင့် အနီးစပ်ဆုံးက။",id:"Pandangan Anda tentang uang yang paling mendekati?"},[
+  [{ja:"必要な額を確実に稼いで、生活を安定させたい",my:"လိုအပ်သောပမာဏကို သေချာရှာ၍ ဘဝ တည်ငြိမ်လိုသည်",id:"Ingin penghasilan yang pasti sesuai kebutuhan dan hidup stabil"},{stay:1,fin:1}],
+  [{ja:"今は我慢しても、将来のために多く稼ぎたい",my:"ယခု ခံရသော်လည်း အနာဂတ်အတွက် ပိုရှာလိုသည်",id:"Rela bersusah sekarang untuk menghasilkan lebih banyak demi masa depan"},{earn:2,career:1}],
+  [{ja:"稼げる仕事があれば、少しきつくても挑戦したい",my:"ငွေပိုရသော အလုပ်ရှိလျှင် ခက်ခဲသော်လည်း စမ်းလိုသည်",id:"Jika ada pekerjaan yang menghasilkan lebih, saya mau mencoba walau agak berat"},{earn:2}],
+  [{ja:"稼ぎより、無理のない生活を大事にしたい",my:"ဝင်ငွေထက် မပင်ပန်းသော ဘဝကို အရေးထားသည်",id:"Lebih mementingkan hidup yang tidak memaksakan diri daripada penghasilan"},{earn:-2,day:1}]
+]),
+Q("q65","10",{ja:"介護福祉士の資格について、どう考えていますか？",my:"ပြုစုစောင့်ရှောက်မှု လက်မှတ် (Kaigo Fukushishi) ရယူခြင်းကို ဘယ်လိုထင်ပါသလဲ။",id:"Bagaimana pandangan Anda tentang sertifikat Kaigo Fukushishi (perawat lansia bersertifikat)?"},[
+  [{ja:"必ず取りたい。勉強方法をすでに調べた",my:"သေချာပေါက် ရယူလိုသည်။ လေ့လာနည်းကို ရှာထားပြီ",id:"Pasti ingin mendapatkannya; sudah mencari cara belajarnya"},{career:2,consc:1}],
+  [{ja:"取りたい。会社が支援してくれるなら",my:"ရယူလိုသည်။ ကုမ္ပဏီက ပံ့ပိုးပေးလျှင်",id:"Ingin, jika perusahaan mendukung"},{career:1}],
+  [{ja:"必要になれば考える",my:"လိုအပ်လာလျှင် စဉ်းစားမည်",id:"Akan dipikirkan jika diperlukan"},{}],
+  [{ja:"今は考えていない",my:"ယခု မစဉ်းစားသေးပါ",id:"Belum memikirkannya sekarang"},{career:-1}]
+]),
+Q("q66","10",{ja:"1人で利用者の家を訪問して介護する仕事（訪問介護）について、どう思いますか？",my:"အသုံးပြုသူ၏ အိမ်ကို တစ်ဦးတည်း သွား၍ ပြုစုစောင့်ရှောက်သော အလုပ် (အိမ်တိုင်ရာရောက် ပြုစုစောင့်ရှောက်မှု) ကို ဘယ်လိုထင်ပါသလဲ။",id:"Bagaimana pendapat Anda tentang pekerjaan mengunjungi rumah pengguna layanan sendirian untuk merawatnya (perawatan kunjungan rumah)?"},[
+  [{ja:"やってみたい。やりがいと収入が増えるなら",my:"လုပ်ကြည့်လိုသည်။ အလုပ်တန်ဖိုးနှင့် ဝင်ငွေ တိုးလျှင်",id:"Ingin mencoba jika lebih bermakna dan penghasilan bertambah"},{career:2,earn:1}],
+  [{ja:"経験を積んだあとなら挑戦したい",my:"အတွေ့အကြုံ ရပြီးမှ စမ်းလိုသည်",id:"Ingin mencoba setelah punya cukup pengalaman"},{career:1}],
+  [{ja:"施設でチームで働く方が安心",my:"ဌာနတွင် အဖွဲ့နှင့် အတူလုပ်ခြင်းက ပိုစိတ်ချရသည်",id:"Lebih tenang bekerja bersama tim di fasilitas"},{career:-1,team:1,stay:1}],
+  [{ja:"1人で判断するのは不安",my:"တစ်ဦးတည်း ဆုံးဖြတ်ရမည်မှာ စိုးရိမ်သည်",id:"Khawatir harus mengambil keputusan sendirian"},{career:-2}]
+]),
+Q("q67","10",{ja:"日本で車を運転すること（送迎や訪問で運転する仕事）について",my:"ဂျပန်တွင် ကားမောင်းခြင်း (ကြိုပို့ သို့မဟုတ် အိမ်တိုင်ရာရောက် သွားရန် မောင်းသော အလုပ်) နှင့် ပတ်သက်၍",id:"Tentang mengemudi mobil di Jepang (pekerjaan antar-jemput atau kunjungan rumah)"},[
+  [{ja:"免許を取って運転したい。仕事の幅が広がる",my:"လိုင်စင်ရယူ၍ မောင်းလိုသည်။ အလုပ်အခွင့်အလမ်း ပိုကျယ်မည်",id:"Ingin mengambil SIM dan mengemudi; peluang kerja lebih luas"},{career:2}],
+  [{ja:"必要なら取る",my:"လိုအပ်လျှင် ရယူမည်",id:"Akan mengambil jika diperlukan"},{career:1}],
+  [{ja:"冬の雪道の運転は不安",my:"ဆောင်းရာသီ ဆီးနှင်းလမ်းတွင် မောင်းရမည်မှာ စိုးရိမ်သည်",id:"Khawatir mengemudi di jalan bersalju saat musim dingin"},{cold:-1}],
+  [{ja:"運転はしたくない",my:"ကားမမောင်းလိုပါ",id:"Tidak ingin mengemudi"},{career:-1}]
+]),
+//----- セクション9: 即答・本能 -----
+Q("q39","9",{ja:"一番嫌なのは？",my:"အမုန်းဆုံးအရာက ဘာလဲ။",id:"Yang paling Anda BENCI?"},[
+  [{ja:"貧乏になること",my:"ဆင်းရဲသွားခြင်း",id:"Menjadi miskin"},{money_d:3,fin:-1}],
+  [{ja:"バカにされること",my:"အထင်သေးခံရခြင်း",id:"Diremehkan / dipandang rendah"},{prestige_d:3,revenge:1}],
+  [{ja:"自由がないこと",my:"လွတ်လပ်မှု ဆုံးရှုံးခြင်း",id:"Kehilangan kebebasan"},{freedom_d:3,rule:-1,agree:-1}],
+  [{ja:"一人になること",my:"တစ်ယောက်တည်း ဖြစ်ခြင်း",id:"Sendirian"},{relation_d:3,extra:1,fam:1}]
+]),
+Q("q40","9",{ja:"もし一つだけ手に入るなら？",my:"တစ်ခုတည်းသာ ရနိုင်လျှင် ဘာယူမလဲ။",id:"Jika hanya SATU yang bisa Anda dapatkan?"},[
+  [{ja:"お金",my:"ငွေအများကြီး",id:"Uang banyak"},{money_d:3}],
+  [{ja:"人気",my:"လူကြိုက်များခြင်း / နာမည်ကြီးခြင်း",id:"Popularitas / terkenal"},{prestige_d:3,extra:1}],
+  [{ja:"自由",my:"လွတ်လပ်မှု",id:"Kebebasan"},{freedom_d:3}],
+  [{ja:"安心",my:"စိတ်ချလုံခြုံမှု",id:"Rasa aman"},{consc:1,long:1,emo:1}]
+]),
+Q("q41","9",{ja:"一番許せないのは？",my:"အခွင့်မလွှတ်နိုင်ဆုံးအရာက ဘာလဲ။",id:"Yang paling tidak bisa Anda MAAFKAN?"},[
+  [{ja:"嘘をつかれること",my:"လိမ်ညာခံရခြင်း",id:"Dibohongi"},{integ:2,rule:1}],
+  [{ja:"命令されること",my:"အမိန့်ပေးခံရခြင်း",id:"Diperintah"},{rule:-2,agree:-1,freedom_d:1}],
+  [{ja:"無視されること",my:"လျစ်လျူရှုခံရခြင်း",id:"Diabaikan"},{relation_d:2,prestige_d:1}],
+  [{ja:"負けること",my:"ရှုံးနိမ့်ခြင်း",id:"Kalah / dikalahkan"},{revenge:2,prestige_d:1,resil:-1}]
+]),
+Q("q42","9",{ja:"一番苦手なのは？",my:"အခက်ဆုံး / အညံ့ဆုံးအရာက ဘာလဲ။",id:"Yang paling TIDAK Anda kuasai?"},[
+  [{ja:"待つこと",my:"စောင့်ဆိုင်းခြင်း",id:"Menunggu"},{impulse:2}],
+  [{ja:"我慢すること",my:"သည်းခံခြင်း",id:"Bersabar / menahan diri"},{impulse:2,resil:-2}],
+  [{ja:"謝ること",my:"တောင်းပန်ခြင်း",id:"Minta maaf"},{integ:-1,prestige_d:2,agree:-1}],
+  [{ja:"人に合わせること",my:"သူများအလိုကျ လိုက်ခြင်း",id:"Mengikuti pendapat orang"},{agree:-2,freedom_d:1}]
+]),
+Q("q43","9",{ja:"一番心が弱くなるのは？",my:"စိတ်အအားနည်းဆုံး အချိန်က ဘယ်အချိန်လဲ။",id:"Kapan hati Anda paling LEMAH?"},[
+  [{ja:"寂しい時",my:"အထီးကျန်ချိန်",id:"Saat kesepian"},{relation_d:2,extra:-1}],
+  [{ja:"疲れている時",my:"ပင်ပန်းချိန်",id:"Saat lelah"},{resil:-1}],
+  [{ja:"お金がない時",my:"ငွေမရှိချိန်",id:"Saat tidak ada uang"},{money_d:2,fin:-1}],
+  [{ja:"バカにされた時",my:"အထင်သေးခံရချိန်",id:"Saat diremehkan"},{prestige_d:2,revenge:1}]
+]),
+Q("q44","9",{ja:"一番恥ずかしいのは？",my:"အရှက်ရဆုံးအရာက ဘာလဲ။",id:"Yang paling MEMALUKAN bagi Anda?"},[
+  [{ja:"人前で失敗すること",my:"လူအများရှေ့တွင် ကျရှုံးခြင်း",id:"Gagal di depan orang banyak"},{prestige_d:2,resil:-1}],
+  [{ja:"お金がないと思われること",my:"ငွေမရှိဟု အမြင်ခံရခြင်း",id:"Terlihat tidak punya uang"},{money_d:2,prestige_d:1}],
+  [{ja:"バカだと思われること",my:"ဉာဏ်နည်းသည်ဟု အထင်ခံရခြင်း",id:"Dianggap bodoh"},{prestige_d:2}],
+  [{ja:"友達がいないと思われること",my:"သူငယ်ချင်းမရှိဟု အထင်ခံရခြင်း",id:"Dianggap tidak punya teman"},{relation_d:2,extra:1}]
+]),
+Q("q45","9",{ja:"一番イライラするのは？",my:"အစိတ်အနှောင့်အယှက် အဖြစ်ဆုံးက ဘာလဲ။",id:"Yang paling membuat Anda JENGKEL?"},[
+  [{ja:"遅い人",my:"နှေးကွေးသောသူ",id:"Orang yang lambat"},{impulse:2}],
+  [{ja:"偉そうな人",my:"မာနကြီးသောသူ",id:"Orang yang sombong"},{prestige_d:1,revenge:1}],
+  [{ja:"ルールを守らない人",my:"စည်းကမ်း မလိုက်နာသောသူ",id:"Orang yang melanggar aturan"},{rule:2,integ:1}],
+  [{ja:"自分を見下す人",my:"ကိုယ့်ကို အထင်သေးသောသူ",id:"Orang yang merendahkan saya"},{prestige_d:2,revenge:2}]
+]),
+Q("q46","9",{ja:"一番なりたくないのは？",my:"အဖြစ်မလိုဆုံး လူစားက ဘာလဲ။",id:"Yang paling tidak ingin Anda JADI?"},[
+  [{ja:"弱い人",my:"အားနည်းသောသူ",id:"Orang lemah"},{prestige_d:1}],
+  [{ja:"目立たない人",my:"ထင်မပေါ်သော သာမန်လူ",id:"Orang biasa, tidak menonjol"},{prestige_d:2,extra:1}],
+  [{ja:"貧しい人",my:"ဆင်းရဲသောသူ",id:"Orang miskin"},{money_d:2,fin:1}],
+  [{ja:"みんなに嫌われる人",my:"လူတိုင်း မုန်းသောသူ",id:"Orang yang dibenci semua orang"},{relation_d:2,agree:1}]
+]),
+Q("q47","9",{ja:"一番近い考えは？",my:"သင်နှင့် အနီးစပ်ဆုံး အတွေးအခေါ်က ဘာလဲ။",id:"Pemikiran yang paling DEKAT dengan Anda?"},[
+  [{ja:"人は強くないと負ける",my:"လူသည် မသန်မာလျှင် ရှုံးမည်",id:"Yang tidak kuat akan kalah"},{revenge:1,prestige_d:1}],
+  [{ja:"人は好かれないと寂しい",my:"လူသည် အချစ်မခံရလျှင် အထီးကျန်မည်",id:"Yang tidak disukai akan kesepian"},{relation_d:2,agree:1}],
+  [{ja:"人はお金がないと弱い",my:"လူသည် ငွေမရှိလျှင် အားနည်းမည်",id:"Yang tidak punya uang akan lemah"},{money_d:2}],
+  [{ja:"人は自由がないと苦しい",my:"လူသည် မလွတ်လပ်လျှင် ဆင်းရဲမည်",id:"Yang tidak bebas akan menderita"},{freedom_d:2,rule:-1}]
+]),
+Q("q48","9",{ja:"もし一日だけ何でもできるなら？",my:"တစ်ရက်တည်း ဘာမဆို လုပ်နိုင်လျှင် ဘာလုပ်မလဲ။",id:"Jika satu hari saja Anda bisa MELAKUKAN APA SAJA?"},[
+  [{ja:"大きなお金を手に入れる",my:"ငွေအများကြီး ရယူမည်",id:"Mendapatkan uang besar"},{money_d:2}],
+  [{ja:"有名になる",my:"နာမည်ကြီးအောင် လုပ်မည်",id:"Menjadi terkenal"},{prestige_d:2,extra:1}],
+  [{ja:"好きな場所へ行く",my:"ကြိုက်သောနေရာသို့ သွားမည်",id:"Pergi ke tempat yang saya suka"},{freedom_d:2}],
+  [{ja:"嫌いな人を見返す",my:"ကိုယ့်ကိုမကြိုက်သူများကို ပြန်လည်အံတုပြမည်",id:"Membalas orang yang tidak suka saya"},{revenge:3,integ:-1,prestige_d:1}]
+]),
+];
+
+
+// 矛盾検出ペア（回答の一貫性）: a と b の両方に該当する選択をした場合に「矛盾」
+const CONSISTENCY=[
+  {axis:'day',  a:['q53',[0]],  b:['q54',[3]],  label:'日勤希望（q53）と「夜勤で稼げないのは残念」（q54）',ask:'夜勤のない働き方を本当に望んでいるのか、収入面の本音を聞く'},
+  {axis:'day',  a:['q53',[2,3]],b:['q54',[0]],  label:'夜勤を選ぶ（q53）と「日勤がちょうどいい」（q54）',ask:'夜勤への考えがどちらなのか、理由を含めて確認する'},
+  {axis:'cold', a:['q49',[3]],  b:['q50',[0]],  label:'「寒いのは苦手」（q49）と「寒い日の方が動きやすい」（q50）',ask:'寒い環境の経験と、冬の生活への具体的なイメージを聞く'},
+  {axis:'cold', a:['q51',[3]],  b:['q50',[0,1]],label:'「雪道通勤は毎日は無理」（q51）と「寒い日も動ける」（q50）',ask:'雪道の徒歩通勤を想定した生活が可能か、具体的に確認する'},
+  {axis:'stay', a:['q60',[0]],  b:['q62',[2]],  label:'「他社の誘いは断る」（q60）と「1〜2年で変えるのは普通」（q62）',ask:'転職を考える条件と、同じ職場で続ける意思を確認する'},
+  {axis:'stay', a:['q61',[0,1]],b:['q60',[3]],  label:'「3年後も同じ職場」（q61）と「誘われたらすぐ移る」（q60）',ask:'3年後の希望と、好条件の誘いがあった時の行動を確認する'},
+  {axis:'remit',a:['q55',[3]],  b:['q56',[0]],  label:'「仕送りは10万円以上必要」（q55）と「仕送りは3〜4万円」（q56）',ask:'毎月の仕送りの必要額を、家族との約束も含めて数字で確認する'},
+  {axis:'earn', a:['q64',[3]],  b:['q57',[2,3]],label:'「稼ぎより無理のない生活」（q64）と「副業・転職で収入を増やす」（q57）',ask:'収入への期待と、生活の安定のどちらを優先するか確認する'},
+  {axis:'career',a:['q65',[3]], b:['q61',[1]],  label:'「資格は考えていない」（q65）と「介護福祉士の勉強をしている」（q61）',ask:'資格取得への本気度と、会社に期待する支援を確認する'},
+  {axis:'team', a:['q58',[3]],  b:['q63',[1]],  label:'「担当が終われば休憩」（q58）と「チームが困っているなら出勤」（q63）',ask:'同僚を手伝った具体的な経験を聞き、協力への姿勢を確認する'}
+];
+// 面接で確かめたい点（項目が低いとき）
+const INTERVIEW_Q={
+  day:'夜勤のない日勤だけの働き方について、収入面も含めてどう考えているか聞く',
+  remit:'毎月の仕送り額と、デイサービスの手取りで生活が成り立つかを具体的な数字で確認する',
+  cold:'北海道の冬（雪、暖房費、徒歩通勤）のイメージがあるか、寒い環境での生活経験を聞く',
+  team:'同僚が困っているときに自分から動いた経験と、情報共有の習慣を具体例で聞く',
+  stay:'同じ職場で長く働くことへの考えと、転職を考える条件を聞く'
+};
+
+// 候補者画面の文言（ビルマ語 / インドネシア語）
+const I18N={
+  my:{
+    title:'ကိုယ်ရေးပရိုဖိုင် မေးခွန်းလွှာ',
+    welcome:'ကြိုဆိုပါတယ်',
+    intro:'ဂျပန်နိုင်ငံ ဟောက်ကိုင်းဒိုး၊ ဆပ်ပေါ်ရိုမြို့ရှိ Day Service ပြုစုစောင့်ရှောက်မှုဌာန "Noah Konzert" တွင် အလုပ်လုပ်ရန် စိတ်ဝင်စားမှုအတွက် ကျေးဇူးတင်ပါသည်။ အင်တာဗျူးမတိုင်မီ သင့်အကြောင်း ပိုမိုသိရှိနိုင်ရန် ဤမေးခွန်းလွှာကို ဖြေပေးပါ။',
+    infoTitle:'အချက်အလက်',
+    info1:'မေးခွန်း ၆၇ ခု (၁၅–၂၀ မိနစ်)',
+    info2:'အမှန် / အမှား အဖြေ မရှိပါ။ ရိုးသားစွာ ဖြေပါ',
+    info3:'မေးခွန်းတစ်ခုစီတွင် အချိန်ကန့်သတ်ချက် ရှိသည်။ ကြာကြာ မစဉ်းစားပါနှင့်',
+    info4:'အချက်အလက်များကို YS Talent နှင့် လက်ခံမည့်ကုမ္ပဏီသာ ကြည့်ရှုပါမည်',
+    disclaimer:'ဤမေးခွန်းလွှာသည် အောင်/ရှုံး ဆုံးဖြတ်ရန် မဟုတ်ပါ။ အင်တာဗျူးကို အထောက်အကူပြုရန် ကိုးကားအချက်အလက် ဖြစ်သည်။',
+    nameLabel:'အမည်အပြည့်အစုံ (နိုင်ငံကူးလက်မှတ်အတိုင်း)',
+    namePh:'ဥပမာ: AUNG KO KO',
+    contactLabel:'Viber / WhatsApp / Email (ဆက်သွယ်ရန်)',
+    contactPh:'+95 9xx / upama@gmail.com',
+    start:'စတင်မည်',
+    back:'နောက်သို့',
+    next:'ရှေ့သို့',
+    submit:'ပို့မည်',
+    sending:'ပို့နေသည်...',
+    pleaseAnswer:'ကျေးဇူးပြု၍ အဖြေရွေးပါ',
+    nameRequired:'အမည် ဖြည့်ရန် လိုအပ်ပါသည်',
+    quickTitle:'လျင်မြန်စွာဖြေရမည့် မေးခွန်းများ',
+    quickDesc:'ကြာကြာ မစဉ်းစားပါနှင့်။ ပထမဆုံးပေါ်လာသော အဖြေကို ရွေးပါ။',
+    sec:'ဒုတိယ',
+    thanks:'ကျေးဇူးတင်ပါသည်',
+    sentTitle:'သင့်အဖြေများကို ပို့ပြီးပါပြီ',
+    sentDesc:'YS Talent မှ နောက်အဆင့်ကို အကြောင်းကြားပါမည်။',
+    notSentTitle:'အင်တာနက် ပြဿနာကြောင့် ပို့မရပါ',
+    notSentDesc:'အောက်ပါကုဒ်ကို Viber / WhatsApp မှတစ်ဆင့် YS Talent သို့ ပို့ပေးပါ။',
+    copy:'ကုဒ် ကူးယူမည်',
+    copied:'ကူးယူပြီးပါပြီ',
+    again:'အစမှ ပြန်စမည်',
+    langSelect:'ဘာသာစကား ရွေးပါ'
+  },
+  id:{
+    title:'Kuesioner Profil Diri',
+    welcome:'Selamat datang',
+    intro:'Terima kasih atas minat Anda untuk bekerja di "Noah Konzert", day service (perawatan lansia harian) di Sapporo, Hokkaido, Jepang. Sebelum wawancara, mohon isi kuesioner ini agar kami dapat mengenal Anda lebih baik.',
+    infoTitle:'Informasi',
+    info1:'67 pertanyaan (15–20 menit)',
+    info2:'Tidak ada jawaban benar atau salah. Jawablah dengan jujur',
+    info3:'Setiap pertanyaan ada batas waktu. Jangan berpikir terlalu lama',
+    info4:'Data hanya dilihat oleh YS Talent dan perusahaan penerima',
+    disclaimer:'Kuesioner ini bukan penentu lulus atau tidak. Hasilnya adalah informasi referensi untuk melengkapi wawancara.',
+    nameLabel:'Nama lengkap (sesuai paspor)',
+    namePh:'Contoh: BUDI SANTOSO',
+    contactLabel:'WhatsApp / Email (untuk dihubungi)',
+    contactPh:'+62 8xx / nama@gmail.com',
+    start:'Mulai',
+    back:'Kembali',
+    next:'Lanjut',
+    submit:'Kirim',
+    sending:'Mengirim...',
+    pleaseAnswer:'Silakan pilih jawaban',
+    nameRequired:'Nama wajib diisi',
+    quickTitle:'Pertanyaan jawaban cepat',
+    quickDesc:'Jangan berpikir lama. Pilih jawaban yang pertama muncul di kepala Anda.',
+    sec:'detik',
+    thanks:'Terima kasih',
+    sentTitle:'Jawaban Anda sudah terkirim',
+    sentDesc:'YS Talent akan menghubungi Anda untuk langkah berikutnya.',
+    notSentTitle:'Pengiriman gagal karena masalah internet',
+    notSentDesc:'Kirimkan kode di bawah ini ke YS Talent melalui WhatsApp.',
+    copy:'Salin kode',
+    copied:'Tersalin',
+    again:'Mulai lagi',
+    langSelect:'Pilih bahasa'
+  },
+  ja:{
+    title:'性格・志向診断',
+    welcome:'ようこそ',
+    intro:'北海道札幌市のデイサービス、ノアコンツェル様で働くことに関心を持っていただき、ありがとうございます。面接の前にあなたのことをよく知るため、この質問に答えてください。',
+    infoTitle:'ご案内',
+    info1:'質問は67問（15〜20分）',
+    info2:'正解・不正解はありません。正直に答えてください',
+    info3:'各質問には制限時間があります。長く考えないでください',
+    info4:'回答はYSタレントと受入企業のみが確認します',
+    disclaimer:DISCLAIMER_JA,
+    nameLabel:'氏名（パスポート表記）',
+    namePh:'',
+    contactLabel:'連絡先',
+    contactPh:'',
+    start:'開始',back:'戻る',next:'次へ',submit:'送信',sending:'送信中...',
+    pleaseAnswer:'回答を選んでください',nameRequired:'氏名は必須です',
+    quickTitle:'即答セクション',quickDesc:'長く考えず、最初に頭に浮かんだ答えを選んでください。',
+    sec:'秒',thanks:'ありがとうございました',sentTitle:'送信完了',sentDesc:'次の案内をお待ちください。',
+    notSentTitle:'通信エラーで送信できませんでした',notSentDesc:'下記コードをYSタレントに送ってください。',
+    copy:'コードをコピー',copied:'コピーしました',again:'もう一度',langSelect:'言語を選んでください'
+  }
+};
+function t(key){return (I18N[LANG||'ja']||I18N.ja)[key]||I18N.ja[key]||key;}
+
+//==========================================================
+// スコア計算
+//==========================================================
+// 正規化: 加点は「加点の満点」、減点は「減点の満点」を分母にする（茶の花版 v1.1 / ドライバー版 v7.8 と同じ修正）
+function maxPossible(key,dir){
+  let s=0;
+  QUESTIONS.forEach(q=>{
+    if(q.type==='text')return;
+    let m=0;
+    q.options.forEach(o=>{const v=(o.s||{})[key]||0;m=Math.max(m,dir<0?-v:v);});
+    s+=m;
+  });
+  return s;
+}
+const _maxCache={};
+function maxP(key,dir){const k=key+':'+dir;if(!(k in _maxCache))_maxCache[k]=maxPossible(key,dir);return _maxCache[k];}
+function normOne(v,key){
+  if(v>=0){const pos=Math.max(2,maxP(key,1));return Math.min(10,5+(v/pos)*5);}
+  const neg=Math.max(2,maxP(key,-1));return Math.max(0,5+(v/neg)*5);
+}
+function calcScores(answers){
+  answers=answers||{};
+  const t={},r={},d={},f={};
+  Object.keys(TRAITS).forEach(k=>t[k]=0);
+  Object.keys(RISKS).forEach(k=>r[k]=0);
+  Object.keys(DRIVES).forEach(k=>d[k+'_d']=0);
+  Object.keys(FIT).forEach(k=>f[k]=0);
+  let answered=0;
+  QUESTIONS.forEach(q=>{
+    if(q.type==='text')return;
+    const sel=answers[q.id];if(sel==null)return;
+    const opt=q.options[sel];if(!opt)return;
+    answered++;
+    Object.entries(opt.s||{}).forEach(([k,v])=>{
+      if(k in t)t[k]+=v;
+      if(k in r)r[k]+=v;
+      if(k in d)d[k]+=v;
+      if(k in f)f[k]+=v;
+    });
+  });
+  const norm={};Object.keys(TRAITS).forEach(k=>norm[k]=normOne(t[k],k));
+  const normR={};Object.keys(RISKS).forEach(k=>normR[k]=normOne(r[k],k));
+  const normF={};Object.keys(FIT).forEach(k=>normF[k]=normOne(f[k],k));
+  const driveTotal=Object.values(d).reduce((a,b)=>a+Math.max(0,b),0);
+  const normD={};
+  Object.keys(DRIVES).forEach(k=>{const v=Math.max(0,d[k+'_d']);normD[k]=driveTotal>0?(v/driveTotal)*100:25;});
+  return{traits:norm,risks:normR,drives:normD,fit:normF,raw:t,rawRisks:r,rawDrives:d,rawFit:f,answered};
+}
+function countSignals(answers,key,positive){
+  if(!answers)return 99;
+  let c=0;
+  QUESTIONS.forEach(q=>{
+    if(q.type==='text')return;
+    const sel=answers[q.id];if(sel==null)return;
+    const opt=q.options[sel];if(!opt)return;
+    const v=(opt.s||{})[key]||0;
+    if(positive&&v>0)c++;else if(!positive&&v<0)c++;
+  });
+  return c;
+}
+// 注意点の自動検出
+function detectFlags(scores,answers){
+  const f=[];const t=scores.traits;const r=scores.risks;const d=scores.drives||{};
+  if(t.emo<3)f.push({level:'red',label:'情緒の安定に懸念（短気）'});
+  if(t.rule<3)f.push({level:'red',label:'規範意識が低い'});
+  if(t.integ<3)f.push({level:'red',label:'誠実さに懸念'});
+  if(t.empathy<3)f.push({level:'red',label:'共感性が低い'});
+  else if(t.empathy<4.5&&countSignals(answers,'empathy',false)>=2)f.push({level:'yellow',label:'共感性に懸念'});
+  if(t.careAcc<3)f.push({level:'red',label:'身体介助への抵抗感が強い'});
+  else if(t.careAcc<4.5&&countSignals(answers,'careAcc',false)>=2)f.push({level:'yellow',label:'介助受容性に懸念'});
+  if(t.long<4&&countSignals(answers,'long',false)>=2)f.push({level:'yellow',label:'日本での長期就労意欲が弱い'});
+  if(t.clean<4&&countSignals(answers,'clean',false)>=2)f.push({level:'yellow',label:'清潔感に要指導'});
+  if(t.resil<4&&countSignals(answers,'resil',false)>=2)f.push({level:'yellow',label:'ストレス耐性が低い'});
+  if(t.fin<4&&countSignals(answers,'fin',false)>=2)f.push({level:'yellow',label:'金銭管理に懸念'});
+  if(t.fam<4&&countSignals(answers,'fam',false)>=2)f.push({level:'yellow',label:'家族の支援が弱い'});
+  if(r.alc>7&&countSignals(answers,'alc',true)>=2)f.push({level:'red',label:'飲酒頻度が高い'});
+  if(r.smoke>7)f.push({level:'yellow',label:'喫煙習慣あり'});
+  if(r.digi>7&&countSignals(answers,'digi',true)>=2)f.push({level:'yellow',label:'スマホ依存傾向'});
+  if(r.avoid>7&&countSignals(answers,'avoid',true)>=2)f.push({level:'yellow',label:'対立回避が強い'});
+  if(r.impulse>7&&countSignals(answers,'impulse',true)>=2)f.push({level:'red',label:'衝動性が高い'});
+  if(r.revenge>7&&countSignals(answers,'revenge',true)>=2)f.push({level:'red',label:'見返し・復讐心が強い'});
+  if(d.money>50)f.push({level:'yellow',label:'金銭ドライブ過剰'});
+  if(d.prestige>50)f.push({level:'yellow',label:'承認・プライド過剰'});
+  if(d.freedom>50)f.push({level:'yellow',label:'自由志向過剰'});
+  return f;
+}
+function getDriveType(drives){
+  const max=Object.entries(drives).sort((a,b)=>b[1]-a[1])[0];
+  const types={
+    money:{ja:'金銭ドライブ型',desc:'稼ぐことが第一動機。給料・手当に敏感。'},
+    prestige:{ja:'承認ドライブ型',desc:'認められることを重視。プライドが高く、褒めると伸びる。'},
+    freedom:{ja:'自由ドライブ型',desc:'拘束を嫌う。裁量を与えると力を発揮。'},
+    relation:{ja:'関係ドライブ型',desc:'人とのつながりが第一。チーム配属で活きる。'}
+  };
+  return{type:max[0],pct:max[1].toFixed(0),...types[max[0]]};
+}
+
+//==========================================================
+// 7項目の判定・回答の一貫性・面接で確かめたい点
+//==========================================================
+function mean(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;}
+function checkConsistency(answers){
+  answers=answers||{};
+  const hits=[];
+  CONSISTENCY.forEach(p=>{
+    const a=answers[p.a[0]],b=answers[p.b[0]];
+    if(a==null||b==null)return;
+    if(p.a[1].includes(a)&&p.b[1].includes(b))hits.push(p);
+  });
+  const level=hits.length===0?'high':hits.length<=2?'mid':'low';
+  const label={high:'高',mid:'中',low:'低'}[level];
+  return{hits,level,label,count:hits.length};
+}
+function judgeFit(fit,cons){
+  const avgA=mean(FIT_A.map(k=>fit[k]));
+  const avgB=mean(FIT_B.map(k=>fit[k]));
+  const lowA=FIT_A.filter(k=>fit[k]<5);
+  const reasons=[];
+  let type,label,color,bg;
+  const f1=v=>v.toFixed(1);
+  if(cons.level==='low'){
+    type='unclear';label='どちらとも言えない';
+    reasons.push(`回答の一貫性が低い（矛盾 ${cons.count}組）ため、点数の解釈を保留`);
+    reasons.push(`参考: 定着5項目の平均 ${f1(avgA)} / 訪問系2項目の平均 ${f1(avgB)}`);
+  }else if(avgA>=6.5&&lowA.length===0&&avgB<7){
+    type='settle';label='定着プラン向き';
+    reasons.push(`定着5項目の平均 ${f1(avgA)}（6.5以上）`);
+    reasons.push('5点未満の定着項目なし');
+    reasons.push(`訪問系2項目の平均 ${f1(avgB)}（7未満）`);
+  }else if(avgB>=7&&fit.stay<6){
+    type='visit';label='訪問系ルート向き';
+    reasons.push(`訪問系2項目の平均 ${f1(avgB)}（7以上）: 稼ぎたい意欲 ${f1(fit.earn)} / キャリア志向 ${f1(fit.career)}`);
+    reasons.push(`同じ職場で長く ${f1(fit.stay)}（6未満）`);
+    if(avgA>=6.5)reasons.push(`定着5項目の平均も ${f1(avgA)} と高く、1年目は定着プランでも働ける見込み`);
+  }else{
+    type='unclear';label='どちらとも言えない';
+    if(avgA<6.5)reasons.push(`定着5項目の平均 ${f1(avgA)}（6.5未満）`);
+    if(lowA.length)reasons.push(`5点未満の定着項目: ${lowA.map(k=>FIT[k].short+' '+f1(fit[k])).join('、')}`);
+    if(avgB>=7&&fit.stay>=6)reasons.push(`訪問系2項目の平均 ${f1(avgB)} と高いが、同じ職場で長く ${f1(fit.stay)} も高い（両立型）`);
+    if(avgA>=6.5&&lowA.length===0&&avgB>=7)reasons.push(`定着5項目も訪問系2項目も高い。1年目は定着、その後の希望を面接で確認`);
+    if(!reasons.length)reasons.push(`定着5項目の平均 ${f1(avgA)} / 訪問系2項目の平均 ${f1(avgB)} で、どちらの目安にも達していない`);
+  }
+  const style={settle:{color:'#065F46',bg:'#D1FAE5'},visit:{color:'#1E40AF',bg:'#DBEAFE'},unclear:{color:'#92400E',bg:'#FEF3C7'}}[type];
+  return{type,label,reasons,avgA,avgB,lowA,...style};
+}
+function interviewPoints(fit,cons){
+  const pts=[];
+  cons.hits.forEach(p=>pts.push({kind:'矛盾',title:p.label,ask:p.ask}));
+  FIT_A.filter(k=>fit[k]<5).sort((a,b)=>fit[a]-fit[b]).forEach(k=>pts.push({kind:'低い項目',title:`${FIT[k].ja}が低め（${fit[k].toFixed(1)}）`,ask:INTERVIEW_Q[k]}));
+  FIT_A.filter(k=>fit[k]>=5&&fit[k]<6).sort((a,b)=>fit[a]-fit[b]).forEach(k=>pts.push({kind:'やや低い項目',title:`${FIT[k].ja}がやや低め（${fit[k].toFixed(1)}）`,ask:INTERVIEW_Q[k]}));
+  if(mean(FIT_B.map(k=>fit[k]))>=7)pts.push({kind:'志向',title:`訪問系への志向が強い（稼ぎたい意欲 ${fit.earn.toFixed(1)} / キャリア志向 ${fit.career.toFixed(1)}）`,ask:'1年後のキャリア希望（訪問介護、資格、運転）と、その間デイサービスで働く意思を確認する'});
+  return pts.slice(0,3);
+}
+
+//==========================================================
+// 既存メンバーとの相性
+//==========================================================
+function calcCompatibility(candScores,memb){
+  let sim=0,total=0;
+  Object.keys(TRAITS).forEach(k=>{const a=candScores.traits[k];const b=memb.traits[k]??5;sim+=10-Math.abs(a-b);total+=10;});
+  let score=(sim/total)*10;
+  const risks=[],positives=[];
+  const cT=candScores.traits,mT=memb.traits||{};
+  const cR=candScores.risks,mR=memb.risks||{};
+  const cD=candScores.drives||{},mD=memb.drives||{};
+  if(cT.emo<5&&(mT.emo??5)<5){score-=1.5;risks.push('両者とも情緒が不安定で衝突しやすい');}
+  if(cR.alc>6&&(mR.alc||0)>6){score-=1;risks.push('両者とも飲酒頻度が高い');}
+  if(cT.clean<5&&(mT.clean??5)<5){score-=1;risks.push('両者とも清潔感が低く、寮の衛生に注意');}
+  if(cT.rule<5&&(mT.rule??5)<5){score-=1;risks.push('両者ともルール意識が低い');}
+  if(cR.impulse>6&&(mR.impulse||0)>6){score-=1.5;risks.push('両者とも衝動性が高く、些細な事で衝突しやすい');}
+  if(cR.revenge>6&&(mR.revenge||0)>6){score-=1.5;risks.push('両者とも見返し心が強く、不仲が長期化しやすい');}
+  if((cD.prestige||0)>40&&(mD.prestige||0)>40){score-=1;risks.push('両者とも承認欲求が強い');}
+  if((cD.money||0)>45&&(mD.money||0)>45){score-=0.5;risks.push('両者とも金銭ドライブが強く、待遇で揉める可能性');}
+  if((cD.freedom||0)>45&&(mT.rule??5)>=7){score-=0.5;risks.push('候補者が自由志向、メンバーがルール重視で価値観が衝突しやすい');}
+  if(memb.isBenchmark&&cT.consc>=6){positives.push('基準メンバーの指導を素直に受けやすい');}
+  if((mT.comm??5)>=7&&cT.comm<5){positives.push('コミュニケーションの強いメンバーが候補者の弱みを補完');}
+  if((mT.long??5)>=8&&cT.long>=7){positives.push('双方が長期就労意欲で安定したチーム');}
+  if((cD.relation||0)>35&&(mD.relation||0)>35){positives.push('双方が関係ドライブ型で絆を作りやすい');}
+  if((cD.prestige||0)>35&&(mT.comm??5)>=7){positives.push('プライド型候補に対し、メンバーが褒めて伸ばせる');}
+  score=Math.max(1,Math.min(10,score));
+  let advice;
+  if(score>=8)advice='同じチーム・近接配置を強く推奨';
+  else if(score>=6)advice='問題なし、近接配置可';
+  else if(score>=4)advice='近接配置可、ただし初期1か月は密に観察';
+  else advice='別チーム配置を推奨';
+  return{score,sim:sim/total,risks,positives,advice};
+}
+function getAllPeople(){
+  const people=[];
+  groupedLatest().forEach(s=>{
+    const sc=calcScores(s.answers);
+    people.push({id:'c:'+s.id,refId:s.id,type:'candidate',name:s.name,subtitle:'候補者 '+fmtDate(s.submittedAt),traits:sc.traits,risks:sc.risks,drives:sc.drives});
+  });
+  activeMembers().forEach(m=>{
+    people.push({id:'m:'+m.id,refId:m.id,type:'member',name:m.name,subtitle:(m.company||CONFIG.companyName)+(m.isBenchmark?'（基準）':''),isBenchmark:m.isBenchmark,traits:m.traits||{},risks:m.risks||{},drives:m.drives||{money:25,prestige:25,freedom:25,relation:25}});
+  });
+  return people;
+}
+function calcPairCompat(a,b){
+  let sim=0,total=0;
+  Object.keys(TRAITS).forEach(k=>{const av=a.traits[k]??5,bv=b.traits[k]??5;sim+=10-Math.abs(av-bv);total+=10;});
+  let score=(sim/total)*10;
+  const risks=[],positives=[];
+  const aT=a.traits,bT=b.traits,aR=a.risks||{},bR=b.risks||{},aD=a.drives||{},bD=b.drives||{};
+  if((aT.emo??5)<5&&(bT.emo??5)<5){score-=1.5;risks.push('両者とも情緒が不安定');}
+  if((aR.alc||0)>6&&(bR.alc||0)>6){score-=1;risks.push('両者とも飲酒頻度が高い');}
+  if((aT.clean??5)<5&&(bT.clean??5)<5){score-=1;risks.push('両者とも清潔感が低い');}
+  if((aT.rule??5)<5&&(bT.rule??5)<5){score-=1;risks.push('両者ともルール意識が低い');}
+  if((aR.impulse||0)>6&&(bR.impulse||0)>6){score-=1.5;risks.push('両者とも衝動性が高い');}
+  if((aR.revenge||0)>6&&(bR.revenge||0)>6){score-=1.5;risks.push('両者とも見返し心が強い');}
+  if((aD.prestige||0)>40&&(bD.prestige||0)>40){score-=1;risks.push('両者ともプライド型');}
+  if((aD.money||0)>45&&(bD.money||0)>45){score-=0.5;risks.push('両者とも金銭志向が強い');}
+  if(a.isBenchmark||b.isBenchmark){const other=a.isBenchmark?b:a;if((other.traits.consc??5)>=6)positives.push('基準メンバーの指導を受けやすい');}
+  if((aT.comm??5)>=7&&(bT.comm??5)<5)positives.push(esc(a.name)+'のコミュニケーション力が補完');
+  if((bT.comm??5)>=7&&(aT.comm??5)<5)positives.push(esc(b.name)+'のコミュニケーション力が補完');
+  if((aT.long??5)>=8&&(bT.long??5)>=7)positives.push('双方が長期就労意欲');
+  if((aD.relation||0)>35&&(bD.relation||0)>35)positives.push('双方が関係ドライブ型');
+  score=Math.max(1,Math.min(10,score));
+  let advice;
+  if(score>=8)advice='相性良好。同じチーム配置を推奨';
+  else if(score>=6)advice='問題なし。近接配置可';
+  else if(score>=4)advice='初期1か月は密に観察';
+  else advice='別チーム配置を推奨';
+  return{score,sim:sim/total,risks,positives,advice};
+}
+
+//==========================================================
+// データ層（Supabase + ローカルキャッシュ）
+//==========================================================
+let state=loadCache();
+function loadCache(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)return JSON.parse(r);}catch(e){}return{submissions:[],members:[]};}
+function saveCache(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function uuid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+function nowIso(){return new Date().toISOString();}
+function who(){return settings.userName||'unknown';}
+function normalizeName(n){return String(n||'').normalize('NFKC').toLowerCase().replace(/[\s　.,'’‐-]/g,'');}
+function activeSubs(){return state.submissions.filter(s=>s&&!s.deleted);}
+function activeMembers(){return state.members.filter(m=>m&&!m.deleted);}
+const sync={lastPullAt:null,syncing:false,error:null};
+
+function subToRow(s){return{id:s.id,name:s.name,contact:s.contact||'',lang:s.lang||'',candidate_key:s.candidateKey||normalizeName(s.name),answers:s.answers||{},timing:s.timing||{},notes:s.notes||'',submitted_at:s.submittedAt,updated_at:s.updatedAt||nowIso(),updated_by:s.updatedBy||who(),deleted:!!s.deleted};}
+function rowToSub(r){return{id:r.id,name:r.name,contact:r.contact||'',lang:r.lang||'',candidateKey:r.candidate_key||normalizeName(r.name),answers:r.answers||{},timing:r.timing||{},notes:r.notes||'',submittedAt:r.submitted_at,updatedAt:r.updated_at,updatedBy:r.updated_by,deleted:!!r.deleted};}
+function memToRow(m){return{id:m.id,name:m.name,company:m.company||CONFIG.companyName,is_benchmark:!!m.isBenchmark,traits:m.traits||{},risks:m.risks||{},drives:m.drives||{},fit:m.fit||{},notes:m.notes||'',source_submission_id:m.sourceSubmissionId||null,updated_at:m.updatedAt||nowIso(),updated_by:m.updatedBy||who(),deleted:!!m.deleted};}
+function rowToMem(r){return{id:r.id,name:r.name,company:r.company||CONFIG.companyName,isBenchmark:!!r.is_benchmark,traits:r.traits||{},risks:r.risks||{},drives:r.drives||{},fit:r.fit||{},notes:r.notes||'',sourceSubmissionId:r.source_submission_id||null,updatedAt:r.updated_at,updatedBy:r.updated_by,deleted:!!r.deleted};}
+
+async function syncPull(silent){
+  if(!sb||!sbSession)return;
+  sync.syncing=true;sync.error=null;updateSyncBadge();
+  try{
+    const [a,b]=await Promise.all([
+      sb.from(CONFIG.TABLE_SUB).select('*').eq('deleted',false).order('submitted_at',{ascending:false}),
+      sb.from(CONFIG.TABLE_MEM).select('*').eq('deleted',false).order('name')
+    ]);
+    if(a.error)throw a.error;if(b.error)throw b.error;
+    state.submissions=a.data.map(rowToSub);
+    state.members=b.data.map(rowToMem);
+    saveCache();
+    sync.lastPullAt=new Date();
+  }catch(e){sync.error=e.message||String(e);console.error('syncPull',e);if(!silent)alert('データ取得エラー: '+sync.error);}
+  sync.syncing=false;updateSyncBadge();
+}
+async function dbUpsertSub(s){
+  s.updatedAt=nowIso();s.updatedBy=who();saveCache();
+  if(!sb||!sbSession)return;
+  const {error}=await sb.from(CONFIG.TABLE_SUB).upsert(subToRow(s));
+  if(error){sync.error=error.message;alert('保存エラー: '+error.message);}
+  updateSyncBadge();
+}
+async function dbUpsertMem(m){
+  m.updatedAt=nowIso();m.updatedBy=who();saveCache();
+  if(!sb||!sbSession)return;
+  const {error}=await sb.from(CONFIG.TABLE_MEM).upsert(memToRow(m));
+  if(error){sync.error=error.message;alert('保存エラー: '+error.message);}
+  updateSyncBadge();
+}
+function updateSyncBadge(){
+  const el=document.getElementById('sync-badge');if(!el)return;
+  if(!sb){el.innerHTML='<span style="font-size:10px;color:#F59E0B;">Supabase未設定</span>';return;}
+  if(sync.syncing){el.innerHTML='<span style="font-size:10px;color:#6B7280;">同期中...</span>';return;}
+  if(sync.error){el.innerHTML='<span style="font-size:10px;color:#DC2626;" title="'+esc(sync.error)+'">同期エラー</span>';return;}
+  if(sync.lastPullAt){
+    const secs=Math.floor((Date.now()-sync.lastPullAt)/1000);
+    const tt=secs<60?secs+'秒前':secs<3600?Math.floor(secs/60)+'分前':Math.floor(secs/3600)+'時間前';
+    el.innerHTML='<span style="font-size:10px;color:#059669;">共有DB接続中（'+tt+'に取得）</span>';
+  }else el.innerHTML='<span style="font-size:10px;color:#6B7280;">未取得</span>';
+}
+setInterval(()=>{if(MODE==='admin'&&isLoggedIn()&&!sync.syncing)syncPull(true).then(()=>{if(!document.querySelector('.modal-bg'))render();});},90000);
+setInterval(updateSyncBadge,15000);
+
+//==========================================================
+// ルーティング
+//==========================================================
+function render(){
+  if(MODE==='quiz'){renderQuiz();return;}
+  if(!isLoggedIn()){renderLogin();return;}
+  renderAdmin();
+}
+
+//==========================================================
+// 管理者ログイン（Supabase Auth: メール＋パスワード／PIN）
+//==========================================================
+function renderLogin(){
+  const app=document.getElementById('app');
+  const email=settings.adminEmail||CONFIG.adminEmail||'';
+  app.innerHTML=`
+  <div style="min-height:100vh;display:flex;flex-direction:column;background:#F5F5F7;">
+    <div class="gradient-main" style="padding:60px 20px 80px;color:#fff;text-align:center;">
+      <h1 style="font-size:24px;font-weight:800;margin:0 0 4px;">${esc(CONFIG.appName)}</h1>
+      <p style="font-size:13px;opacity:.95;margin:0;">${esc(CONFIG.appSubtitle)}</p>
+    </div>
+    <div style="max-width:420px;width:100%;margin:-60px auto 0;padding:0 16px;flex:1;">
+      <div class="card">
+        <h2 style="font-size:18px;font-weight:700;margin:0 0 6px;">管理者ログイン</h2>
+        <p style="font-size:12px;color:#6B7280;margin:0 0 18px;">担当者名を選び、管理用のメールとPIN（パスワード）を入力してください。</p>
+        <div style="margin-bottom:14px;">
+          <label class="label">担当者名（編集履歴に表示）</label>
+          <select class="select" id="login-select" onchange="onLoginSelect()">
+            <option value="">選択してください</option>
+            ${CONFIG.teamMembers.map(n=>`<option value="${esc(n)}" ${settings.userName===n?'selected':''}>${esc(n)}</option>`).join('')}
+            <option value="__other__">その他（手動入力）</option>
+          </select>
+        </div>
+        <div id="login-custom-wrap" style="display:none;margin-bottom:14px;">
+          <label class="label">お名前（手動入力）</label>
+          <input class="input" id="login-custom" placeholder="例: 山田 太郎">
+        </div>
+        <div style="margin-bottom:14px;"><label class="label">管理用メールアドレス</label><input class="input" id="login-email" type="email" value="${esc(email)}" placeholder="管理者から案内されたメール" autocomplete="username"></div>
+        <div style="margin-bottom:14px;"><label class="label">PIN（パスワード）</label><input class="input" id="login-pin" type="password" placeholder="PINを入力" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <button class="btn-primary btn-block" id="login-btn" onclick="doLogin()">ログイン</button>
+        <p id="login-msg" style="font-size:11px;color:#DC2626;margin:10px 0 0;text-align:center;"></p>
+        <p style="font-size:11px;color:${sb?'#10B981':'#F59E0B'};margin:12px 0 0;text-align:center;">${sb?'共有データベース（Supabase）に接続します':'Supabase未設定'}</p>
+      </div>
+      <div class="disclaimer" style="margin-top:14px;">${DISCLAIMER_JA}</div>
+      <div style="text-align:center;margin-top:20px;font-size:11px;color:#9CA3AF;">${esc(CONFIG.appName)} v${CONFIG.version}<br>YS Talent</div>
+    </div>
+  </div>`;
+}
+function onLoginSelect(){const sel=document.getElementById('login-select').value;const w=document.getElementById('login-custom-wrap');if(w)w.style.display=(sel==='__other__')?'block':'none';}
+async function doLogin(){
+  const sel=document.getElementById('login-select').value;
+  let name='';
+  if(sel==='__other__')name=document.getElementById('login-custom').value.trim();else if(sel)name=sel;
+  const email=document.getElementById('login-email').value.trim();
+  const pin=document.getElementById('login-pin').value;
+  const msg=document.getElementById('login-msg');
+  if(!name){msg.textContent='担当者名を選択または入力してください';return;}
+  if(!email||!pin){msg.textContent='メールとPINを入力してください';return;}
+  if(!sb){msg.textContent='Supabaseが設定されていません';return;}
+  const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='確認中...';
+  const {data,error}=await sb.auth.signInWithPassword({email,password:pin});
+  if(error){btn.disabled=false;btn.textContent='ログイン';msg.textContent='ログインできません: メールまたはPINが違います';console.warn(error.message);return;}
+  sbSession=data.session;
+  settings.userName=name;settings.adminEmail=email;settings.loginAt=nowIso();saveSettings();
+  render();
+  await syncPull();render();
+}
+async function doLogout(){
+  if(!confirm('ログアウトしますか？'))return;
+  try{if(sb)await sb.auth.signOut();}catch(e){}
+  sbSession=null;delete settings.loginAt;saveSettings();
+  render();
+}
+
+//==========================================================
+// 候補者モード（スマホ用・言語選択あり）
+//==========================================================
+const quiz={step:LANG?'welcome':'lang',idx:0,answers:{},timing:{},name:'',contact:''};
+function renderQuiz(){
+  const app=document.getElementById('app');
+  if(quiz.step==='lang')return renderLangSelect(app);
+  if(quiz.step==='welcome')return renderWelcome(app);
+  if(quiz.step==='quiz')return renderQuestion(app);
+  if(quiz.step==='done')return renderDone(app);
+}
+function setLang(l){LANG=l;document.documentElement.lang=l;quiz.step='welcome';render();}
+function renderLangSelect(app){
+  app.innerHTML=`
+  <div style="min-height:100vh;display:flex;flex-direction:column;">
+    <div class="gradient-main" style="padding:40px 16px 80px;color:#fff;text-align:center;">
+      <div style="font-size:28px;font-weight:800;margin-bottom:6px;">YS Talent</div>
+      <div style="font-size:14px;opacity:.9;">${esc(CONFIG.companyName)} 性格・志向診断</div>
+    </div>
+    <div class="quiz-container" style="margin-top:-60px;flex:1;">
+      <div class="card">
+        <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;">ဘာသာစကား ရွေးပါ</h2>
+        <h2 style="font-size:18px;font-weight:700;margin:0 0 4px;">Pilih bahasa</h2>
+        <p style="font-size:12px;color:#6B7280;margin:0 0 16px;">言語を選んでください</p>
+        <button class="option-btn" onclick="setLang('my')"><div style="font-size:17px;font-weight:600;">မြန်မာဘာသာ</div><div style="font-size:11px;color:#9CA3AF;">ビルマ語 + 日本語</div></button>
+        <button class="option-btn" onclick="setLang('id')"><div style="font-size:17px;font-weight:600;">Bahasa Indonesia</div><div style="font-size:11px;color:#9CA3AF;">インドネシア語 + 日本語</div></button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderWelcome(app){
+  app.innerHTML=`
+  <div style="min-height:100vh;display:flex;flex-direction:column;">
+    <div class="gradient-main" style="padding:32px 16px 80px;color:#fff;text-align:center;">
+      <div style="font-size:28px;font-weight:800;margin-bottom:6px;">YS Talent</div>
+      <div style="font-size:17px;font-weight:600;opacity:.95;">${esc(t('title'))}</div>
+      <div style="font-size:12px;opacity:.9;margin-top:6px;">${esc(CONFIG.companyName)} 性格・志向診断</div>
+    </div>
+    <div class="quiz-container" style="margin-top:-60px;flex:1;">
+      <div class="card">
+        <h2 style="font-size:18px;font-weight:700;margin:0 0 12px;">${esc(t('welcome'))}</h2>
+        <p style="font-size:14px;color:#4B5563;line-height:1.8;margin:0 0 6px;">${esc(t('intro'))}</p>
+        <p style="font-size:11px;color:#9CA3AF;line-height:1.7;margin:0 0 14px;">${esc(I18N.ja.intro)}</p>
+        <div style="background:#E6F4F1;border-radius:10px;padding:12px;font-size:13px;color:#1E7168;margin-bottom:12px;line-height:1.8;">
+          <strong>${esc(t('infoTitle'))}</strong><br>
+          - ${esc(t('info1'))}<br>- ${esc(t('info2'))}<br>- ${esc(t('info3'))}<br>- ${esc(t('info4'))}
+        </div>
+        <div class="disclaimer" style="margin-bottom:18px;">${esc(t('disclaimer'))}<br><span style="color:#9CA3AF;">${DISCLAIMER_JA}</span></div>
+        <div style="margin-bottom:14px;">
+          <label class="label">${esc(t('nameLabel'))}<br><span style="font-weight:400;color:#9CA3AF;font-size:11px;">${I18N.ja.nameLabel}</span></label>
+          <input class="input" id="q-name" placeholder="${esc(t('namePh'))}" value="${esc(quiz.name)}">
+        </div>
+        <div style="margin-bottom:24px;">
+          <label class="label">${esc(t('contactLabel'))}<br><span style="font-weight:400;color:#9CA3AF;font-size:11px;">${I18N.ja.contactLabel}</span></label>
+          <input class="input" id="q-contact" placeholder="${esc(t('contactPh'))}" value="${esc(quiz.contact)}">
+        </div>
+        <button class="btn-primary btn-block" onclick="startQuiz()">${esc(t('start'))} / ${I18N.ja.start}</button>
+        <p style="text-align:center;margin:12px 0 0;"><button onclick="quiz.step='lang';render()" style="border:none;background:none;color:#6B7280;font-size:11px;cursor:pointer;text-decoration:underline;">${esc(t('langSelect'))}</button></p>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px 16px;font-size:11px;color:#9CA3AF;">YS Talent / ${esc(CONFIG.companyName)}</div>
+  </div>`;
+}
+function startQuiz(){
+  const name=document.getElementById('q-name').value.trim();
+  const contact=document.getElementById('q-contact').value.trim();
+  if(!name){alert(t('nameRequired')+' / '+I18N.ja.nameRequired);return;}
+  quiz.name=name;quiz.contact=contact;quiz.step='quiz';quiz.idx=0;render();
+}
+function renderQuestion(app){
+  const q=QUESTIONS[quiz.idx];
+  const sec=SECTIONS[q.sec];
+  const progress=(quiz.idx+1)/QUESTIONS.length*100;
+  const timeLimit=timeLimitFor(q);
+  const firstQuick=q.sec==='9'&&quiz.idx===QUESTIONS.findIndex(x=>x.sec==='9');
+  app.innerHTML=`
+  <div style="min-height:100vh;background:#F5F5F7;">
+    <div style="background:#fff;border-bottom:1px solid #E5E7EB;padding:12px 16px;position:sticky;top:0;z-index:10;">
+      <div class="quiz-container" style="padding:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:11px;color:#6B7280;font-weight:600;">${esc(sec[LANG]||sec.ja)} / ${esc(sec.ja)}</span>
+          <span style="font-size:11px;color:#6B7280;">${quiz.idx+1} / ${QUESTIONS.length}</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${progress}%;"></div></div>
+        <div style="display:flex;justify-content:flex-end;align-items:center;margin-top:4px;">
+          <span id="quiz-timer" style="font-size:13px;font-weight:700;color:#059669;min-width:20px;text-align:right;transition:all .2s;">${timeLimit}</span>
+          <span style="font-size:10px;color:#9CA3AF;margin-left:3px;">${esc(t('sec'))}</span>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-container" style="padding-top:20px;padding-bottom:20px;">
+      <div class="fade-in">
+        ${firstQuick?`<div style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);border:1px solid #F59E0B;border-radius:12px;padding:14px;margin-bottom:18px;">
+          <p style="margin:0;font-size:13px;color:#78350F;font-weight:600;">${esc(t('quickTitle'))} / ${I18N.ja.quickTitle}</p>
+          <p style="margin:6px 0 0;font-size:12px;color:#92400E;line-height:1.7;">${esc(t('quickDesc'))}<br>${I18N.ja.quickDesc}</p></div>`:''}
+        <h2 style="font-size:18px;font-weight:700;line-height:1.5;margin:0 0 8px;">${esc(q.text[LANG]||q.text.ja)}</h2>
+        <p style="font-size:13px;color:#9CA3AF;margin:0 0 20px;">${esc(q.text.ja)}</p>
+        ${renderOptionsInput(q)}
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;">
+        <button class="btn-secondary" style="flex:1;" onclick="prevQ()" ${quiz.idx===0?'disabled':''}>${esc(t('back'))}</button>
+        <button class="btn-primary" style="flex:2;" onclick="nextQ()" id="nextBtn">${esc(t('next'))}</button>
+      </div>
+    </div>
+  </div>`;
+  updateNextBtn();
+  try{startTimer(timeLimit);}catch(e){console.error('timer:',e);}
+}
+function renderOptionsInput(q){
+  const cur=quiz.answers[q.id];
+  return q.options.map((o,i)=>`
+    <button class="option-btn ${cur===i?'selected':''}" onclick="selectOpt('${q.id}',${i})">
+      <div>${esc(o.t[LANG]||o.t.ja)}</div>
+      <div style="font-size:11px;color:#9CA3AF;margin-top:4px;">${esc(o.t.ja)}</div>
+    </button>`).join('');
+}
+function startTimer(seconds){
+  if(quiz.timerInterval)clearInterval(quiz.timerInterval);
+  quiz.timerStart=Date.now();quiz.timerSec=seconds;
+  quiz.timerInterval=setInterval(()=>{
+    const el=document.getElementById('quiz-timer');
+    if(!el){clearInterval(quiz.timerInterval);return;}
+    const elapsed=(Date.now()-quiz.timerStart)/1000;
+    const r=Math.max(0,quiz.timerSec-elapsed);
+    el.textContent=Math.ceil(r);
+    if(r<=0){el.style.color='#DC2626';el.style.transform='scale(1.3)';}
+    else if(r<3){el.style.color='#DC2626';el.style.transform='scale(1.1)';}
+    else if(r<5){el.style.color='#F59E0B';el.style.transform='scale(1)';}
+    else{el.style.color='#059669';el.style.transform='scale(1)';}
+  },200);
+}
+function selectOpt(id,i){
+  if(quiz.timerStart){const elapsed=(Date.now()-quiz.timerStart)/1000;quiz.timing[id]=Math.round(elapsed*10)/10;}
+  quiz.answers[id]=i;render();
+}
+function updateNextBtn(){
+  const q=QUESTIONS[quiz.idx];
+  const a=quiz.answers[q.id];
+  const btn=document.getElementById('nextBtn');
+  if(btn){btn.disabled=a==null;btn.textContent=quiz.idx===QUESTIONS.length-1?t('submit'):t('next');}
+}
+function prevQ(){if(quiz.idx>0){quiz.idx--;render();}}
+function nextQ(){
+  const q=QUESTIONS[quiz.idx];
+  if(quiz.answers[q.id]==null){alert(t('pleaseAnswer'));return;}
+  if(quiz.idx<QUESTIONS.length-1){quiz.idx++;render();}
+  else submitQuiz();
+}
+async function submitQuiz(){
+  if(quiz.submitting)return;
+  quiz.submitting=true;
+  const _btn=document.getElementById('nextBtn');
+  if(_btn){_btn.disabled=true;_btn.textContent=t('sending');}
+  const submission={
+    id:uuid(),submittedAt:nowIso(),updatedAt:nowIso(),updatedBy:'candidate:'+quiz.name,
+    name:quiz.name,contact:quiz.contact,lang:LANG,candidateKey:normalizeName(quiz.name),
+    answers:quiz.answers,timing:quiz.timing||{},deleted:false
+  };
+  let directSent=false;
+  if(sb){
+    try{
+      const {error}=await sb.from(CONFIG.TABLE_SUB).insert(subToRow(submission));
+      if(error)throw error;
+      directSent=true;
+    }catch(e){console.error('Direct submit failed:',e);}
+  }
+  // 送信できなかった場合の予備: 送信コード（管理画面の「コード読込」で取り込める）
+  const codePayload={n:quiz.name,c:quiz.contact,l:LANG,a:quiz.answers,ti:quiz.timing,t:submission.submittedAt};
+  quiz.code=btoa(unescape(encodeURIComponent(JSON.stringify(codePayload))));
+  quiz.directSent=directSent;quiz.step='done';quiz.submitting=false;render();
+}
+function renderDone(app){
+  const sent=quiz.directSent;
+  app.innerHTML=`
+  <div style="min-height:100vh;background:#F5F5F7;">
+    <div class="gradient-main" style="padding:60px 16px 40px;color:#fff;text-align:center;">
+      <h1 style="font-size:24px;font-weight:800;margin:0 0 8px;">${esc(t('thanks'))}</h1>
+      <p style="font-size:14px;opacity:.95;margin:0;">${I18N.ja.thanks}</p>
+    </div>
+    <div class="quiz-container" style="padding-top:20px;">
+      ${sent?`<div class="card" style="background:#D1FAE5;border-color:#10B981;">
+        <h3 style="font-weight:700;margin:0 0 6px;font-size:16px;color:#065F46;">${esc(t('sentTitle'))}</h3>
+        <p style="font-size:13px;color:#065F46;margin:0;line-height:1.6;">${esc(t('sentDesc'))}<br><span style="font-size:11px;">${I18N.ja.sentTitle}。${I18N.ja.sentDesc}</span></p></div>`
+      :`<div class="card">
+        <h3 style="font-weight:700;margin:0 0 10px;font-size:16px;">${esc(t('notSentTitle'))}</h3>
+        <p style="font-size:13px;color:#4B5563;line-height:1.7;margin:0 0 16px;">${esc(t('notSentDesc'))}<br><span style="color:#9CA3AF;font-size:11px;">${I18N.ja.notSentDesc}</span></p>
+        <textarea readonly id="done-code" style="width:100%;padding:12px;font-family:monospace;font-size:11px;border:1px solid #D1D5DB;border-radius:8px;background:#F9FAFB;height:120px;" onclick="this.select()">${quiz.code}</textarea>
+        <button class="btn-primary btn-block" style="margin-top:10px;" onclick="copyCode()">${esc(t('copy'))}</button></div>`}
+      <div class="disclaimer" style="margin-top:14px;">${esc(t('disclaimer'))}</div>
+      <div style="text-align:center;margin-top:20px;"><button class="btn-secondary" onclick="resetQuiz()">${esc(t('again'))}</button></div>
+    </div>
+  </div>`;
+}
+function copyCode(){const ta=document.getElementById('done-code');ta.select();try{navigator.clipboard.writeText(ta.value);}catch(e){document.execCommand('copy');}alert(t('copied'));}
+function resetQuiz(){quiz.step='welcome';quiz.idx=0;quiz.answers={};quiz.timing={};quiz.name='';quiz.contact='';render();}
+
+//==========================================================
+// 管理ダッシュボード（日本語）
+//==========================================================
+let currentView='list';
+let currentId=null;
+function renderAdmin(){
+  const app=document.getElementById('app');
+  const tab=(v,label)=>`<button class="tab-btn ${currentView===v&&!currentId?'active':''}" onclick="setView('${v}')">${label}</button>`;
+  app.innerHTML=`
+  <nav style="background:#fff;border-bottom:1px solid #E5E7EB;position:sticky;top:0;z-index:50;">
+    <div class="dashboard-container" style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="gradient-main" style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">N</div>
+        <div>
+          <h1 style="font-size:15px;font-weight:700;margin:0;">${esc(CONFIG.appName)}</h1>
+          <p style="font-size:11px;color:#6B7280;margin:0;">YSタレント｜候補者プロファイル管理</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <div id="sync-badge" style="display:flex;align-items:center;padding:4px 8px;background:#F9FAFB;border-radius:6px;border:1px solid #E5E7EB;"></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:#E6F4F1;border-radius:6px;border:1px solid #9AD5CB;cursor:pointer;" onclick="doLogout()" title="クリックでログアウト">
+          <span style="font-size:11px;color:#1E7168;font-weight:600;">${esc(settings.userName||'')}</span>
+        </div>
+        <button class="btn-secondary btn-sm" onclick="syncPull().then(()=>render())" title="共有DBから再取得">再読込</button>
+        <button class="btn-secondary btn-sm" onclick="showImportCode()">コード読込</button>
+        <button class="btn-secondary btn-sm" onclick="openCandidateLink()">候補者URL</button>
+        <button class="btn-secondary btn-sm" onclick="exportJSON()">書出</button>
+        <button class="btn-secondary btn-sm" style="background:#E6F4F1;border-color:#9AD5CB;" onclick="openSettings()">設定</button>
+      </div>
+    </div>
+    <div class="dashboard-container" style="padding:0 16px;display:flex;gap:24px;border-top:1px solid #E5E7EB;overflow-x:auto;">
+      ${tab('list','提出一覧')}${tab('matrix','相性マトリクス')}${tab('members','既存メンバー')}${tab('guide','使い方')}
+    </div>
+  </nav>
+  <div class="dashboard-container" style="padding:20px 16px;">${
+    currentId?renderDetail():
+    currentView==='list'?renderListView():
+    currentView==='matrix'?renderMatrixView():
+    currentView==='members'?renderMembersView():
+    renderGuideView()
+  }</div>`;
+  updateSyncBadge();
+  setTimeout(initCharts,50);
+}
+function setView(v){currentView=v;currentId=null;render();window.scrollTo(0,0);}
+function showDetail(id){currentId=id;render();window.scrollTo(0,0);}
+function fmtDate(iso){if(!iso)return'';const d=new Date(iso);return isNaN(d)?'':d.toLocaleDateString('ja-JP');}
+function fmtDateTime(iso){if(!iso)return'';const d=new Date(iso);return isNaN(d)?'':d.toLocaleString('ja-JP');}
+function langLabel(l){return l==='my'?'ミャンマー':l==='id'?'インドネシア':'-';}
+
+// 同一人物の受検履歴（candidateKey でまとめる）
+function attemptsOf(s){return activeSubs().filter(x=>(x.candidateKey||normalizeName(x.name))===(s.candidateKey||normalizeName(s.name))).sort((a,b)=>String(a.submittedAt).localeCompare(String(b.submittedAt)));}
+function groupedLatest(){
+  const map={};
+  activeSubs().forEach(s=>{const k=s.candidateKey||normalizeName(s.name);if(!map[k]||String(s.submittedAt)>String(map[k].submittedAt))map[k]=s;});
+  return Object.values(map).sort((a,b)=>String(b.submittedAt).localeCompare(String(a.submittedAt)));
+}
+function calcOvertimeStats(s){
+  if(!s.timing)return{count:0,avg:0,total:0};
+  let count=0,sum=0,total=0;
+  Object.entries(s.timing).forEach(([qid,sec])=>{const q=QUESTIONS.find(x=>x.id===qid);if(!q)return;total++;sum+=sec;if(sec>timeLimitFor(q))count++;});
+  return{count,avg:total?Math.round(sum/total*10)/10:0,total};
+}
+function judgeTag(j){return `<span class="tag" style="background:${j.bg};color:${j.color};">${j.label}</span>`;}
+
+function renderListView(){
+  const latest=groupedLatest();
+  if(latest.length===0)return `
+    <div class="disclaimer" style="margin-bottom:14px;">${DISCLAIMER_JA}</div>
+    <div class="card" style="text-align:center;padding:40px 20px;">
+      <h3 style="margin:0 0 8px;">提出データがまだありません</h3>
+      <p style="font-size:13px;color:#6B7280;margin:0 0 20px;">候補者がスマホで診断を完了すると、ここに表示されます。</p>
+      <button class="btn-primary" onclick="openCandidateLink()">候補者URLを表示</button>
+    </div>`;
+  return `
+    <div class="disclaimer" style="margin-bottom:14px;">${DISCLAIMER_JA} 点数は面接で確認する観点を整理するためのものです。</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <h2 style="font-size:20px;font-weight:700;margin:0 0 4px;">提出一覧</h2>
+        <p style="font-size:13px;color:#6B7280;margin:0;">${latest.length}名（受検 ${activeSubs().length}件）。同じ氏名の再受検は最新を表示し、詳細で過去の結果と並べて見られます。</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;">
+    ${latest.map(s=>{
+      const sc=calcScores(s.answers);
+      const total=mean(Object.values(sc.traits));
+      const cons=checkConsistency(s.answers);
+      const j=judgeFit(sc.fit,cons);
+      const flags=detectFlags(sc,s.answers);
+      const n=attemptsOf(s).length;
+      return `
+      <div class="card" style="cursor:pointer;" onclick="showDetail('${s.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+          <div>
+            <h3 style="margin:0;font-size:15px;font-weight:700;">${esc(s.name)}</h3>
+            <p style="margin:2px 0 0;font-size:11px;color:#9CA3AF;">${esc(s.contact||'')}</p>
+            <p style="margin:2px 0 0;font-size:10px;color:#9CA3AF;">${fmtDateTime(s.submittedAt)}　${langLabel(s.lang)}${n>1?`　<span class="tag tag-purple" style="font-size:9px;padding:1px 6px;">再受検 ${n}回目</span>`:''}</p>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:22px;font-weight:800;color:#2A9D8F;">${total.toFixed(1)}</div>
+            <div style="font-size:10px;color:#9CA3AF;">14特性平均 /10</div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px;">${judgeTag(j)} <span class="tag ${cons.level==='high'?'tag-green':cons.level==='mid'?'tag-yellow':'tag-red'}">一貫性 ${cons.label}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:8px;">
+          ${Object.keys(FIT).map(k=>`<div title="${FIT[k].ja}" style="text-align:center;"><div style="font-size:9px;color:#9CA3AF;white-space:nowrap;">${FIT[k].tiny}</div><div style="font-size:12px;font-weight:700;color:${sc.fit[k]<5?'#DC2626':'#1F2937'};">${sc.fit[k].toFixed(1)}</div></div>`).join('')}
+        </div>
+        ${flags.length>0?`<div style="display:flex;flex-wrap:wrap;gap:4px;">${flags.slice(0,3).map(f=>`<span class="tag tag-${f.level==='red'?'red':'yellow'}">${esc(f.label)}</span>`).join('')}${flags.length>3?`<span class="tag tag-gray">+${flags.length-3}</span>`:''}</div>`:'<div style="font-size:11px;color:#10B981;font-weight:600;">主要な注意点なし</div>'}
+      </div>`;
+    }).join('')}
+    </div>`;
+}
+
+function renderDetail(){
+  const s=state.submissions.find(x=>x.id===currentId);
+  if(!s)return `<button onclick="setView('list')" class="btn-secondary btn-sm">一覧に戻る</button><p>見つかりません</p>`;
+  const sc=calcScores(s.answers);
+  const total=mean(Object.values(sc.traits));
+  const flags=detectFlags(sc,s.answers);
+  const cons=checkConsistency(s.answers);
+  const j=judgeFit(sc.fit,cons);
+  const pts=interviewPoints(sc.fit,cons);
+  const members=activeMembers();
+  const compats=members.map(m=>({m,r:calcCompatibility(sc,m)})).sort((a,b)=>b.r.score-a.r.score);
+  const attempts=attemptsOf(s);
+  const idx=attempts.findIndex(x=>x.id===s.id);
+  const prev=idx>0?attempts[idx-1]:null;
+  const prevSc=prev?calcScores(prev.answers):null;
+  const bySection={};QUESTIONS.forEach(q=>{(bySection[q.sec]=bySection[q.sec]||[]).push(q);});
+  const dt=getDriveType(sc.drives);
+  const delta=(cur,old)=>{if(old==null)return'';const d=cur-old;if(Math.abs(d)<0.05)return'<span style="color:#9CA3AF;font-size:10px;"> ±0</span>';return `<span style="font-size:10px;color:${d>0?'#059669':'#DC2626'};"> ${d>0?'+':''}${d.toFixed(1)}</span>`;};
+  return `
+  <div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;" class="no-print">
+    <button onclick="setView('list')" class="btn-secondary btn-sm">一覧に戻る</button>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+      <label style="font-size:11px;color:#6B7280;display:flex;align-items:center;gap:4px;"><input type="checkbox" id="print-answers" onchange="document.getElementById('answers-section').classList.toggle('print-include',this.checked)">回答一覧も印刷する</label>
+      <button class="btn-secondary btn-sm" onclick="window.print()">診断結果レポートを印刷 / PDF</button>
+      <button class="btn-secondary btn-sm" onclick="registerAsMember('${s.id}')">既存メンバーとして登録</button>
+      <button class="btn-secondary btn-sm btn-danger" onclick="deleteSubmission('${s.id}')">削除</button>
+    </div>
+  </div>
+
+  <div class="print-only" style="margin-bottom:10px;"><h1 style="font-size:18px;margin:0;">診断結果レポート　${esc(CONFIG.companyName)}</h1><p style="font-size:11px;color:#6B7280;margin:2px 0 0;">${esc(CONFIG.appName)}　出力日 ${new Date().toLocaleDateString('ja-JP')}　出力者 ${esc(who())}</p></div>
+  <div class="disclaimer" style="margin-bottom:14px;">${DISCLAIMER_JA} 出身地や学歴ではなく、本人の特性と志向を把握するためのものです。</div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h2 style="font-size:22px;font-weight:800;margin:0 0 4px;">${esc(s.name)}</h2>
+        <p style="font-size:13px;color:#6B7280;margin:0 0 2px;">${esc(s.contact||'')}　回答言語: ${langLabel(s.lang)}</p>
+        <p style="font-size:11px;color:#9CA3AF;margin:0;">提出: ${fmtDateTime(s.submittedAt)}　回答数 ${sc.answered}/${QUESTIONS.filter(q=>q.type!=='text').length}${attempts.length>1?`　受検 ${idx+1}回目 / 全${attempts.length}回`:''}</p>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <div style="text-align:center;background:${j.bg};padding:12px 20px;border-radius:12px;min-width:150px;">
+          <div style="font-size:11px;color:${j.color};font-weight:600;">目安</div>
+          <div style="font-size:18px;font-weight:800;color:${j.color};line-height:1.3;">${j.label}</div>
+        </div>
+        <div style="text-align:center;background:#E6F4F1;padding:12px 20px;border-radius:12px;">
+          <div style="font-size:11px;color:#1E7168;font-weight:600;">14特性平均</div>
+          <div style="font-size:28px;font-weight:800;color:#2A9D8F;line-height:1;">${total.toFixed(1)}</div>
+          <div style="font-size:11px;color:#1E7168;">/ 10</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="grid-fit">
+    <div class="card">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">7項目レーダー（${esc(CONFIG.companyName)}向け）</h3>
+      <div class="chart-box"><canvas id="fit-radar" data-scores='${JSON.stringify(sc.fit)}' data-kind="fit" ${prevSc?`data-prev='${JSON.stringify(prevSc.fit)}'`:''}></canvas></div>
+      ${prevSc?`<p style="font-size:10px;color:#9CA3AF;margin:6px 0 0;">薄い線は前回（${fmtDate(prev.submittedAt)}）の結果</p>`:''}
+    </div>
+    <div class="card">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">7項目スコア（10点満点）</h3>
+      <p style="font-size:11px;color:#6B7280;margin:0 0 8px;">定着プラン（A）5項目 / 訪問系ルート（B）2項目${prevSc?'　（ ）内は前回との差':''}</p>
+      ${Object.entries(FIT).map(([k,v])=>`
+        <div style="margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px;">
+            <span><span class="tag ${v.group==='A'?'tag-green':'tag-blue'}" style="font-size:9px;padding:1px 6px;margin-right:4px;">${v.group}</span>${v.ja}</span>
+            <span style="font-weight:600;color:${sc.fit[k]<5?'#DC2626':'#1F2937'};">${sc.fit[k].toFixed(1)}${prevSc?delta(sc.fit[k],prevSc.fit[k]):''}</span>
+          </div>
+          <div class="score-bar-bg"><div style="height:100%;width:${sc.fit[k]*10}%;background:${v.group==='A'?'linear-gradient(to right,#9AD5CB,#2A9D8F)':'linear-gradient(to right,#93C5FD,#3B82F6)'};"></div></div>
+        </div>`).join('')}
+      <p style="font-size:11px;color:#6B7280;margin:10px 0 0;">定着5項目の平均 <strong>${j.avgA.toFixed(1)}</strong>　訪問系2項目の平均 <strong>${j.avgB.toFixed(1)}</strong></p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="grid-judge">
+    <div class="card" style="border-left:4px solid ${j.color};">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 6px;">目安: <span style="color:${j.color};">${j.label}</span></h3>
+      <p style="font-size:11px;color:#6B7280;margin:0 0 8px;">判定の根拠</p>
+      <ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.8;">${j.reasons.map(r=>`<li>${esc(r)}</li>`).join('')}</ul>
+      <p style="font-size:10px;color:#9CA3AF;margin:10px 0 0;">目安の基準: 定着プラン向き = 定着5項目の平均6.5以上かつ5点未満の項目なし、訪問系2項目の平均7未満。訪問系ルート向き = 訪問系2項目の平均7以上かつ「同じ職場で長く」6未満。一貫性が低い場合は保留。</p>
+    </div>
+    <div class="card" style="border-left:4px solid ${cons.level==='high'?'#10B981':cons.level==='mid'?'#F59E0B':'#EF4444'};">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 6px;">回答の一貫性: ${cons.label}（矛盾 ${cons.count}組 / 確認 ${CONSISTENCY.length}組）</h3>
+      ${cons.hits.length?`<ul style="margin:0 0 8px;padding-left:18px;font-size:12px;line-height:1.7;">${cons.hits.map(h=>`<li>${esc(h.label)}</li>`).join('')}</ul>`:'<p style="font-size:12px;color:#065F46;margin:0 0 8px;">矛盾する回答の組み合わせはありませんでした。</p>'}
+      <h3 style="font-size:14px;font-weight:700;margin:12px 0 6px;">面接で確かめたい点（最大3つ）</h3>
+      ${pts.length?`<ol style="margin:0;padding-left:18px;font-size:12px;line-height:1.7;">${pts.map(p=>`<li><strong>${esc(p.title)}</strong><br><span style="color:#4B5563;">${esc(p.ask)}</span></li>`).join('')}</ol>`:'<p style="font-size:12px;color:#6B7280;margin:0;">点数が低い項目や矛盾した回答はありません。志望動機と生活設計を一般的な面接で確認してください。</p>'}
+    </div>
+  </div>
+
+  ${attempts.length>1?`
+  <div class="card" style="margin-bottom:16px;">
+    <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">受検履歴（同じ氏名 ${attempts.length}回）</h3>
+    <div style="overflow-x:auto;"><table class="plain">
+      <thead><tr><th>回</th><th>提出日</th><th>目安</th><th>一貫性</th>${Object.keys(FIT).map(k=>`<th>${FIT[k].short}</th>`).join('')}<th>14特性平均</th><th class="no-print"></th></tr></thead>
+      <tbody>${attempts.map((a,i)=>{const asc=calcScores(a.answers);const ac=checkConsistency(a.answers);const aj=judgeFit(asc.fit,ac);return `<tr style="${a.id===s.id?'background:#E6F4F1;':''}"><td>${i+1}</td><td>${fmtDate(a.submittedAt)}</td><td>${judgeTag(aj)}</td><td>${ac.label}</td>${Object.keys(FIT).map(k=>`<td style="font-weight:600;">${asc.fit[k].toFixed(1)}</td>`).join('')}<td>${mean(Object.values(asc.traits)).toFixed(1)}</td><td class="no-print">${a.id===s.id?'表示中':`<button class="btn-secondary" style="font-size:10px;padding:3px 8px;" onclick="showDetail('${a.id}')">開く</button>`}</td></tr>`;}).join('')}</tbody>
+    </table></div>
+  </div>`:''}
+
+  ${flags.length>0?`
+  <div class="card" style="margin-bottom:16px;border-left:4px solid #F59E0B;">
+    <h3 style="font-size:14px;font-weight:700;margin:0 0 8px;">注意点（自動検出）</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">${flags.map(f=>`<span class="tag tag-${f.level==='red'?'red':'yellow'}">${esc(f.label)}</span>`).join('')}</div>
+  </div>`:''}
+
+  <div class="card" style="margin-bottom:16px;border-left:4px solid ${DRIVES[dt.type].color};">
+    <p style="font-size:11px;color:#9CA3AF;margin:0 0 4px;font-weight:600;">深層動機タイプ（即答10問より）</p>
+    <h3 style="font-size:18px;font-weight:800;margin:0 0 4px;color:${DRIVES[dt.type].color};">${dt.ja}　<span style="font-size:13px;color:#6B7280;font-weight:600;">(${dt.pct}%)</span></h3>
+    <p style="font-size:12px;color:#4B5563;margin:0 0 10px;">${dt.desc}</p>
+    ${Object.entries(sc.drives).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+      <div style="margin-bottom:6px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:2px;"><span>${DRIVES[k].ja}</span><span style="font-weight:600;">${v.toFixed(0)}%</span></div>
+      <div class="score-bar-bg"><div style="height:100%;background:${DRIVES[k].color};width:${v}%;"></div></div></div>`).join('')}
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" id="grid-charts">
+    <div class="card">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">14特性レーダーチャート</h3>
+      <div class="chart-box"><canvas id="trait-radar" data-scores='${JSON.stringify(sc.traits)}' data-kind="traits" ${prevSc?`data-prev='${JSON.stringify(prevSc.traits)}'`:''}></canvas></div>
+    </div>
+    <div class="card">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">特性スコア（高い順）</h3>
+      ${Object.entries(sc.traits).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
+        <div style="margin-bottom:6px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px;"><span>${TRAITS[k].ja}</span><span style="font-weight:600;">${v.toFixed(1)}${prevSc?delta(v,prevSc.traits[k]):''}</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${v*10}%;"></div></div></div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">既存メンバーとの相性 <span style="font-size:11px;color:#9CA3AF;font-weight:400;">（${esc(CONFIG.companyName)} ${members.length}名）</span></h3>
+    ${members.length===0?'<p style="font-size:12px;color:#6B7280;margin:0;">既存メンバーが登録されていません。「既存メンバー」タブから追加するか、在籍者の受検結果を「既存メンバーとして登録」してください。</p>':`
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;">
+    ${compats.map(({m,r})=>{
+      const bg=r.score>=8?'#D1FAE5':r.score>=6?'#DBEAFE':r.score>=4?'#FEF3C7':'#FEE2E2';
+      return `<div style="border:1px solid #E5E7EB;border-radius:10px;padding:12px;background:${bg};">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px;">
+          <div><strong style="font-size:14px;">${esc(m.name)}</strong>${m.isBenchmark?'<span class="tag tag-green" style="margin-left:4px;">基準</span>':''}</div>
+          <div style="font-size:18px;font-weight:800;color:#1F2937;">${r.score.toFixed(1)}<span style="font-size:11px;color:#9CA3AF;">/10</span></div>
+        </div>
+        ${r.positives.length>0?`<p style="font-size:11px;color:#065F46;margin:6px 0 2px;">良い点: ${r.positives.join('、')}</p>`:''}
+        ${r.risks.length>0?`<p style="font-size:11px;color:#991B1B;margin:2px 0;">注意: ${r.risks.join('、')}</p>`:''}
+        <p style="font-size:11px;color:#374151;margin:6px 0 0;padding-top:6px;border-top:1px solid rgba(0,0,0,.08);"><strong>推奨:</strong> ${r.advice}</p>
+      </div>`;}).join('')}
+    </div>`}
+  </div>
+
+  <div class="card" style="background:#EFF6FF;border-color:#BFDBFE;margin-bottom:16px;">
+    <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;color:#1E40AF;">所見（自動生成）</h3>
+    <div style="font-size:13px;line-height:1.7;color:#1F2937;white-space:pre-wrap;">${esc(generateAdvice(sc,compats,flags,j))}</div>
+    <p style="font-size:11px;color:#9CA3AF;margin:12px 0 0;border-top:1px solid #BFDBFE;padding-top:8px;">面接での観察と合わせて最終的な所見を作成してください。${DISCLAIMER_JA}</p>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <label class="label">メモ（担当者用。共有DBに保存）</label>
+    <textarea class="textarea" rows="3" onchange="updateSubNotes('${s.id}',this.value)" placeholder="面接での確認結果など">${esc(s.notes||'')}</textarea>
+  </div>
+
+  <div class="card answers-section" id="answers-section">
+    <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">回答一覧</h3>
+    ${SECTION_ORDER.map(secKey=>{
+      const qs=bySection[secKey]||[];const sec=SECTIONS[secKey];
+      return `<details ${secKey==='10'?'open':''} style="margin-bottom:8px;">
+        <summary style="cursor:pointer;font-weight:600;font-size:13px;padding:8px 0;">${sec.ja}（${qs.length}問）</summary>
+        <div style="padding-left:8px;border-left:3px solid #9AD5CB;">
+          ${qs.map(q=>{
+            const a=s.answers[q.id];
+            let answer='<em style="color:#9CA3AF;">未回答</em>';
+            if(a!=null){const o=q.options[a];if(o)answer=`${esc(o.t.ja)}<br><span style="color:#9CA3AF;font-size:11px;">${esc(o.t[s.lang]||'')}</span>`;}
+            const tm=s.timing&&s.timing[q.id]!=null?`<span style="color:#9CA3AF;font-size:10px;margin-left:6px;">${s.timing[q.id]}秒${s.timing[q.id]>timeLimitFor(q)?'（超過）':''}</span>`:'';
+            return `<div style="padding:8px 0;border-bottom:1px solid #F3F4F6;font-size:12px;">
+              <div style="color:#6B7280;font-weight:600;margin-bottom:4px;">${q.id}. ${esc(q.text.ja)}${tm}</div><div>${answer}</div></div>`;
+          }).join('')}
+        </div></details>`;
+    }).join('')}
+  </div>`;
+}
+function updateSubNotes(id,v){const s=state.submissions.find(x=>x.id===id);if(s){s.notes=v;dbUpsertSub(s);}}
+
+function generateAdvice(sc,compats,flags,j){
+  const t=sc.traits,r=sc.risks,d=sc.drives||{},f=sc.fit;
+  const top3=Object.entries(t).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>TRAITS[k].ja);
+  const bot3=Object.entries(t).sort((a,b)=>a[1]-b[1]).slice(0,3).map(([k])=>TRAITS[k].ja);
+  const dt=getDriveType(d);
+  let a='';
+  a+=`【目安】${j.label}。${j.reasons[0]||''}\n`;
+  a+=`【強み】${top3.join('、')}\n【弱み】${bot3.join('、')}\n`;
+  a+=`【深層動機】${dt.ja}（${dt.pct}%）。${dt.desc}\n\n`;
+  const fitTop=Object.entries(f).sort((a,b)=>b[1]-a[1])[0];
+  const fitBot=FIT_A.map(k=>[k,f[k]]).sort((a,b)=>a[1]-b[1])[0];
+  a+=`【${CONFIG.companyName}での働き方】最も高い項目は「${FIT[fitTop[0]].ja}」（${fitTop[1].toFixed(1)}）。定着5項目で最も低いのは「${FIT[fitBot[0]].ja}」（${fitBot[1].toFixed(1)}）。\n`;
+  if(f.cold<5)a+=`北海道の冬への適応に不安があります。入国前に冬の生活（服装、暖房費、徒歩通勤）を具体的に説明し、本人の受け止めを確認してください。\n`;
+  if(f.remit<5)a+=`仕送りの必要額に対してデイサービスの収入が足りない可能性があります。手取りと生活費のモデルを示して、本人と家族の了解を得ることを推奨します。\n`;
+  if(f.day<5)a+=`夜勤や収入増への関心が強く、日勤のみの働き方に物足りなさを感じる可能性があります。\n`;
+  if(f.stay<5)a+=`好条件の誘いがあった場合に職場を変える可能性があります。定期的な面談と、キャリアの見通しを早めに示すことが定着の鍵になります。\n`;
+  if(f.team<5)a+=`協力や情報共有の姿勢に課題の可能性があります。入職後は役割を明確にし、報告・共有の習慣づけを支援してください。\n`;
+  if(mean(FIT_B.map(k=>f[k]))>=7)a+=`稼ぎたい意欲とキャリアアップ志向が強いタイプです。1年後に訪問介護、資格取得、運転業務などへ進む道を示すと意欲を保ちやすい一方、その見通しがないと転職を考えやすい点に注意してください。\n`;
+  a+='\n';
+  if(dt.type==='money')a+=`【マネジメント】金銭ドライブ型。給与・手当・昇給の仕組みを明確に示すと安定します。他社の好条件には弱いので、定期的な待遇の説明を。\n`;
+  else if(dt.type==='prestige')a+=`【マネジメント】承認ドライブ型。成果を明示的に褒め、叱責は人前を避けて個別に。プライドが折れると一気に弱るタイプ。\n`;
+  else if(dt.type==='freedom')a+=`【マネジメント】自由ドライブ型。細かい管理より目標管理型で。裁量を与えると伸びますが、過度な管理は意欲を下げます。\n`;
+  else if(dt.type==='relation')a+=`【マネジメント】関係ドライブ型。チーム配属で力を発揮。先輩・同僚との関係づくりの支援が定着の鍵。孤立すると弱ります。\n`;
+  const reds=flags.filter(f=>f.level==='red');
+  if(reds.length){a+=`\n【要確認】${reds.map(f=>f.label).join('、')}。送出側（弊社インドネシア法人またはミャンマー側の送出機関）による追加面談で背景を確認することを推奨します。\n`;}
+  const best=compats[0];
+  if(best&&best.r.score>=6)a+=`【配置】${best.m.name}との相性が最も良好です（${best.r.score.toFixed(1)}/10）。${best.r.advice}。\n`;
+  if(r.revenge>6)a+=`【見返し心】高め。指導の伝え方に注意（人前ではなく個別に）。\n`;
+  if(r.impulse>6)a+=`【衝動性】高め。同じ訴えの繰り返し対応でストレスを溜めやすい。\n`;
+  if(t.resil<5)a+=`【ストレス耐性】低め。失敗時の励まし体制を準備してください。\n`;
+  if(t.careAcc<5)a+=`【介助受容性】低め（${t.careAcc.toFixed(1)}/10）。排泄介助等への抵抗感の可能性。業務内容の丁寧な説明と実習を推奨します。\n`;
+  if(t.empathy>=7)a+=`【共感性】高い（${t.empathy.toFixed(1)}/10）。利用者との信頼関係を築きやすい介護向きの資質です。\n`;
+  return a.trim();
+}
+
+// 在籍者（2期生など）の受検結果を既存メンバー（相性の基準）として登録
+async function registerAsMember(subId){
+  const s=state.submissions.find(x=>x.id===subId);if(!s)return;
+  const existing=activeMembers().find(m=>m.sourceSubmissionId===subId||normalizeName(m.name)===normalizeName(s.name));
+  if(existing&&!confirm(`${existing.name} はすでに既存メンバーに登録されています。この受検結果で上書きしますか？`))return;
+  const sc=calcScores(s.answers);
+  const m=existing||{id:uuid(),name:s.name,company:CONFIG.companyName,isBenchmark:false,notes:''};
+  m.traits={};Object.keys(TRAITS).forEach(k=>m.traits[k]=Math.round(sc.traits[k]*10)/10);
+  m.risks={};Object.keys(RISKS).forEach(k=>m.risks[k]=Math.round(sc.risks[k]*10)/10);
+  m.drives={};Object.keys(DRIVES).forEach(k=>m.drives[k]=Math.round(sc.drives[k]));
+  m.fit={};Object.keys(FIT).forEach(k=>m.fit[k]=Math.round(sc.fit[k]*10)/10);
+  m.sourceSubmissionId=subId;m.deleted=false;
+  if(!existing)state.members.push(m);
+  await dbUpsertMem(m);
+  alert(`${m.name} を既存メンバーとして登録しました。`);render();
+}
+
+//==========================================================
+// 相性マトリクス
+//==========================================================
+let matcherSel={};
+function toggleMatcherSel(id){if(matcherSel[id])delete matcherSel[id];else matcherSel[id]=true;render();}
+function matcherSelectAll(type){getAllPeople().forEach(p=>{if(!type||p.type===type)matcherSel[p.id]=true;});render();}
+function matcherClearAll(){matcherSel={};render();}
+function renderMatrixView(){
+  const all=getAllPeople();
+  if(all.length<2)return `<div class="card" style="text-align:center;padding:40px;"><h3 style="margin:0 0 8px;">相性マトリクス</h3><p style="font-size:13px;color:#6B7280;">候補者と既存メンバーを合わせて2名以上必要です。</p></div>`;
+  const cands=all.filter(p=>p.type==='candidate'),mems=all.filter(p=>p.type==='member');
+  const selected=Object.keys(matcherSel).map(id=>all.find(p=>p.id===id)).filter(Boolean);
+  const personCard=(p)=>{
+    const checked=!!matcherSel[p.id];
+    const bg=p.type==='candidate'?'#E6F4F1':'#DBEAFE',bd=p.type==='candidate'?'#2A9D8F':'#3B82F6';
+    return `<label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:2px solid ${checked?bd:'#E5E7EB'};background:${checked?bg:'#fff'};border-radius:8px;cursor:pointer;font-size:13px;"><input type="checkbox" ${checked?'checked':''} onchange="toggleMatcherSel('${p.id}')" style="width:16px;height:16px;cursor:pointer;"><div style="flex:1;min-width:0;"><div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(p.name)}</div><div style="font-size:10px;color:#6B7280;">${esc(p.subtitle)}</div></div></label>`;
+  };
+  const cellStyle=(sc)=>{const bg=sc>=8?'#D1FAE5':sc>=6?'#DBEAFE':sc>=4?'#FEF3C7':'#FEE2E2';const col=sc>=8?'#065F46':sc>=6?'#1E40AF':sc>=4?'#92400E':'#991B1B';return {bg,col};};
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <div><h2 style="font-size:20px;font-weight:700;margin:0 0 4px;">相性マトリクス</h2><p style="font-size:13px;color:#6B7280;margin:0;">候補者と${esc(CONFIG.companyName)}の既存メンバーを組み合わせて相性を確認します。</p></div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn-secondary" style="font-size:11px;padding:6px 10px;" onclick="matcherSelectAll('candidate')">候補者全選択</button>
+        <button class="btn-secondary" style="font-size:11px;padding:6px 10px;" onclick="matcherSelectAll('member')">既存全選択</button>
+        <button class="btn-secondary" style="font-size:11px;padding:6px 10px;" onclick="matcherSelectAll(null)">全員選択</button>
+        <button class="btn-secondary btn-danger" style="font-size:11px;padding:6px 10px;" onclick="matcherClearAll()">クリア</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;" id="grid-charts">
+      <div class="card"><h3 style="font-size:13px;font-weight:700;margin:0 0 10px;color:#1E7168;">候補者（${cands.length}名）</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;max-height:300px;overflow-y:auto;">${cands.length===0?'<p style="font-size:12px;color:#9CA3AF;">候補者がまだ登録されていません</p>':cands.map(personCard).join('')}</div></div>
+      <div class="card"><h3 style="font-size:13px;font-weight:700;margin:0 0 10px;color:#1E40AF;">既存メンバー（${mems.length}名）</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;max-height:300px;overflow-y:auto;">${mems.length===0?'<p style="font-size:12px;color:#9CA3AF;">既存メンバーが登録されていません</p>':mems.map(personCard).join('')}</div></div>
+    </div>
+    ${selected.length<2?`<div class="card" style="text-align:center;padding:30px;background:#FEF3C7;border-color:#FDE68A;"><p style="font-size:14px;color:#92400E;margin:0;">上のリストから<strong>2名以上</strong>選択すると、相性マトリクスが表示されます</p><p style="font-size:11px;color:#92400E;margin:8px 0 0;">現在: ${selected.length}名選択中</p></div>`:`
+    <div class="card" style="overflow-x:auto;">
+      <h3 style="font-size:14px;font-weight:700;margin:0 0 10px;">相性マトリクス（${selected.length}名 × ${selected.length}名）</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="border-bottom:2px solid #E5E7EB;"><th style="text-align:left;padding:10px;font-size:11px;color:#6B7280;">人物名</th>${selected.map(p=>`<th style="padding:8px;text-align:center;font-size:11px;min-width:80px;"><div style="font-weight:700;">${esc(p.name)}</div><div style="font-size:9px;color:#9CA3AF;font-weight:400;">${esc(p.subtitle)}</div></th>`).join('')}<th style="padding:8px;text-align:center;background:#F9FAFB;font-size:11px;">平均</th></tr></thead>
+        <tbody>${selected.map(pa=>{
+          const rows=selected.map(pb=>pa.id===pb.id?null:calcPairCompat(pa,pb));
+          const avg=rows.filter(r=>r).reduce((a,r)=>a+r.score,0)/(rows.filter(r=>r).length||1);
+          return `<tr style="border-bottom:1px solid #F3F4F6;"><td style="padding:8px;font-weight:600;font-size:12px;">${esc(pa.name)}<br><span style="font-size:10px;color:#9CA3AF;font-weight:400;">${esc(pa.subtitle)}</span></td>${rows.map((r,i)=>{
+            if(!r)return `<td style="padding:6px;"><div style="text-align:center;padding:8px;background:#F3F4F6;color:#9CA3AF;border-radius:6px;">-</div></td>`;
+            const st=cellStyle(r.score);
+            return `<td style="padding:4px;"><div onclick="showPairDetail('${pa.id}','${selected[i].id}')" style="text-align:center;padding:8px;background:${st.bg};color:${st.col};border-radius:6px;font-weight:700;cursor:pointer;" title="クリックで詳細">${r.score.toFixed(1)}</div></td>`;
+          }).join('')}<td style="padding:8px;text-align:center;background:#F9FAFB;font-weight:700;">${avg.toFixed(1)}</td></tr>`;
+        }).join('')}</tbody>
+      </table>
+      <p style="margin-top:12px;font-size:11px;color:#6B7280;">セルをクリックすると2人の詳細な相性分析が表示されます。</p>
+    </div>
+    <div style="margin-top:14px;background:#F9FAFB;border-radius:8px;padding:12px;">
+      <h4 style="font-size:12px;font-weight:700;margin:0 0 6px;">相性の良いペア（スコア順）</h4>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px;">${(()=>{
+        const pairs=[];
+        for(let i=0;i<selected.length;i++)for(let j=i+1;j<selected.length;j++)pairs.push({a:selected[i],b:selected[j],r:calcPairCompat(selected[i],selected[j])});
+        return pairs.sort((x,y)=>y.r.score-x.r.score).slice(0,6).map(({a,b,r})=>`<div style="background:${cellStyle(r.score).bg};padding:8px 10px;border-radius:6px;font-size:11px;cursor:pointer;" onclick="showPairDetail('${a.id}','${b.id}')"><strong>${esc(a.name)}</strong> × <strong>${esc(b.name)}</strong> <span style="float:right;font-weight:700;">${r.score.toFixed(1)}</span></div>`).join('');
+      })()}</div>
+    </div>`}`;
+}
+function showPairDetail(aId,bId){
+  const all=getAllPeople();const a=all.find(p=>p.id===aId),b=all.find(p=>p.id===bId);if(!a||!b)return;
+  const r=calcPairCompat(a,b);
+  const traitRows=Object.entries(TRAITS).map(([k,v])=>{const av=a.traits[k]??5,bv=b.traits[k]??5;const diff=Math.abs(av-bv);const color=diff<=2?'#10B981':diff<=4?'#F59E0B':'#EF4444';
+    return `<tr style="border-bottom:1px solid #F3F4F6;"><td style="padding:6px 8px;font-size:11px;">${v.ja}</td><td style="padding:6px;text-align:center;font-weight:600;font-size:12px;">${av.toFixed(1)}</td><td style="padding:6px;text-align:center;font-size:11px;color:${color};">差 ${diff.toFixed(1)}</td><td style="padding:6px;text-align:center;font-weight:600;font-size:12px;">${bv.toFixed(1)}</td></tr>`;}).join('');
+  const html=`<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="card" style="max-width:620px;width:100%;max-height:90vh;overflow-y:auto;" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px;"><div><h2 style="margin:0;font-size:18px;font-weight:700;">${esc(a.name)} × ${esc(b.name)}</h2><p style="margin:4px 0 0;font-size:11px;color:#6B7280;">${esc(a.subtitle)} / ${esc(b.subtitle)}</p></div><div style="font-size:28px;font-weight:800;color:#2A9D8F;">${r.score.toFixed(1)}<span style="font-size:12px;color:#9CA3AF;">/10</span></div></div>
+    <p style="font-size:13px;font-weight:600;margin:0 0 10px;">${r.advice}</p>
+    ${r.positives.length?`<p style="font-size:12px;color:#065F46;margin:0 0 6px;">良い点: ${r.positives.join('、')}</p>`:''}
+    ${r.risks.length?`<p style="font-size:12px;color:#991B1B;margin:0 0 10px;">注意: ${r.risks.join('、')}</p>`:''}
+    <table style="width:100%;border-collapse:collapse;"><thead><tr style="border-bottom:2px solid #E5E7EB;"><th style="text-align:left;padding:6px 8px;font-size:11px;color:#6B7280;">特性</th><th style="font-size:11px;color:#6B7280;">${esc(a.name)}</th><th></th><th style="font-size:11px;color:#6B7280;">${esc(b.name)}</th></tr></thead><tbody>${traitRows}</tbody></table>
+    <button class="btn-secondary btn-block" style="margin-top:14px;" onclick="this.closest('.modal-bg').remove()">閉じる</button>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+
+//==========================================================
+// 既存メンバー
+//==========================================================
+function renderMembersView(){
+  const ms=activeMembers();
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <h2 style="font-size:20px;font-weight:700;margin:0 0 4px;">既存メンバー（${esc(CONFIG.companyName)}）</h2>
+        <p style="font-size:13px;color:#6B7280;margin:0;">相性計算の基準となる在籍メンバー（${ms.length}名）。在籍者が受検した場合は、詳細画面の「既存メンバーとして登録」で取り込めます。</p>
+      </div>
+      <button class="btn-primary" style="font-size:13px;padding:10px 16px;" onclick="addMember()">メンバーを手動追加</button>
+    </div>
+    ${ms.length===0?'<div class="card" style="text-align:center;padding:30px;color:#6B7280;font-size:13px;">まだ登録がありません。</div>':''}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
+    ${ms.map(m=>`
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div><h3 style="margin:0;font-size:15px;font-weight:700;">${esc(m.name)} ${m.isBenchmark?'<span class="tag tag-green">基準</span>':''}</h3>
+          <p style="margin:2px 0 0;font-size:11px;color:#9CA3AF;">${esc(m.company||CONFIG.companyName)}${m.sourceSubmissionId?'　受検結果から登録':''}</p></div>
+          <button class="btn-secondary" style="font-size:11px;padding:4px 10px;" onclick="editMember('${m.id}')">編集</button>
+        </div>
+        <div class="chart-box-sm" style="margin-top:10px;"><canvas data-scores='${JSON.stringify(m.traits||{})}' data-kind="traits"></canvas></div>
+        ${m.fit&&Object.keys(m.fit).length?`<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:8px;">${Object.keys(FIT).map(k=>`<div style="text-align:center;"><div style="font-size:9px;color:#9CA3AF;white-space:nowrap;">${FIT[k].tiny}</div><div style="font-size:12px;font-weight:700;">${(m.fit[k]??0).toFixed(1)}</div></div>`).join('')}</div>`:''}
+        <p style="font-size:11px;color:#6B7280;margin:8px 0 0;">${esc(m.notes||'')}</p>
+      </div>`).join('')}
+    </div>`;
+}
+function addMember(){
+  const name=prompt('メンバー名（漢字・カタカナ・ローマ字いずれか）:');
+  if(!name)return;
+  const m={id:uuid(),name,company:CONFIG.companyName,isBenchmark:false,traits:{},risks:{},drives:{money:25,prestige:25,freedom:25,relation:25},fit:{},notes:''};
+  Object.keys(TRAITS).forEach(k=>m.traits[k]=5);Object.keys(RISKS).forEach(k=>m.risks[k]=3);
+  state.members.push(m);dbUpsertMem(m).then(()=>render());editMember(m.id);
+}
+function editMember(id){
+  const m=state.members.find(x=>x.id===id);if(!m)return;
+  const html=`<div class="modal-bg" onclick="if(event.target===this){this.remove();render();}"><div class="card" style="max-width:520px;width:100%;max-height:90vh;overflow-y:auto;" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 12px;">${esc(m.name)} の編集</h3>
+    <div style="margin-bottom:10px;"><label class="label">名前</label><input class="input" value="${esc(m.name)}" onchange="m_update('${m.id}','name',this.value)"></div>
+    <div style="margin-bottom:10px;"><label class="label">所属</label><input class="input" value="${esc(m.company||CONFIG.companyName)}" onchange="m_update('${m.id}','company',this.value)"></div>
+    <div style="margin-bottom:10px;"><label class="label">備考</label><textarea class="textarea" rows="2" onchange="m_update('${m.id}','notes',this.value)">${esc(m.notes||'')}</textarea></div>
+    <div style="margin-bottom:10px;"><label style="font-size:12px;display:flex;align-items:center;gap:6px;"><input type="checkbox" ${m.isBenchmark?'checked':''} onchange="m_update('${m.id}','isBenchmark',this.checked)">基準メンバー（模範となる在籍者）</label></div>
+    <h4 style="font-size:13px;font-weight:700;margin:14px 0 8px;">特性スコア (0-10)</h4>
+    ${Object.entries(TRAITS).map(([k,v])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><label style="flex:1;font-size:12px;">${v.ja}</label><input type="range" min="0" max="10" step="0.5" value="${m.traits[k]??5}" oninput="m_setNum('${m.id}','traits','${k}',this.value);this.nextElementSibling.textContent=this.value"><span style="font-size:12px;width:30px;text-align:right;font-weight:600;">${m.traits[k]??5}</span></div>`).join('')}
+    <h4 style="font-size:13px;font-weight:700;margin:14px 0 8px;">注意点の指標 (0-10)</h4>
+    ${Object.entries(RISKS).map(([k,v])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><label style="flex:1;font-size:12px;">${v.ja}</label><input type="range" min="0" max="10" step="0.5" value="${m.risks[k]??3}" oninput="m_setNum('${m.id}','risks','${k}',this.value);this.nextElementSibling.textContent=this.value"><span style="font-size:12px;width:30px;text-align:right;font-weight:600;">${m.risks[k]??3}</span></div>`).join('')}
+    <h4 style="font-size:13px;font-weight:700;margin:14px 0 8px;">7項目 (0-10)</h4>
+    ${Object.entries(FIT).map(([k,v])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><label style="flex:1;font-size:12px;">${v.ja}</label><input type="range" min="0" max="10" step="0.5" value="${(m.fit||{})[k]??5}" oninput="m_setNum('${m.id}','fit','${k}',this.value);this.nextElementSibling.textContent=this.value"><span style="font-size:12px;width:30px;text-align:right;font-weight:600;">${(m.fit||{})[k]??5}</span></div>`).join('')}
+    <h4 style="font-size:13px;font-weight:700;margin:14px 0 8px;">動機ドライブ (%)</h4>
+    ${Object.entries(DRIVES).map(([k,v])=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;"><label style="flex:1;font-size:12px;color:${v.color};">${v.ja}</label><input type="range" min="0" max="100" step="5" value="${(m.drives||{})[k]??25}" oninput="m_setNum('${m.id}','drives','${k}',this.value);this.nextElementSibling.textContent=this.value+'%'"><span style="font-size:12px;width:40px;text-align:right;font-weight:600;">${(m.drives||{})[k]??25}%</span></div>`).join('')}
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button class="btn-secondary btn-danger" style="flex:1;" onclick="m_delete('${m.id}');this.closest('.modal-bg').remove()">削除</button>
+      <button class="btn-primary" style="flex:2;" onclick="this.closest('.modal-bg').remove();render()">完了</button>
+    </div>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+let _memTimer=null;
+function _memSave(m){clearTimeout(_memTimer);_memTimer=setTimeout(()=>dbUpsertMem(m),600);}
+function m_update(id,k,v){const m=state.members.find(x=>x.id===id);if(m){m[k]=v;_memSave(m);}}
+function m_setNum(id,group,k,v){const m=state.members.find(x=>x.id===id);if(m){if(!m[group])m[group]={};m[group][k]=parseFloat(v);_memSave(m);}}
+function m_delete(id){if(!confirm('このメンバーを削除しますか？'))return;const m=state.members.find(x=>x.id===id);if(m){m.deleted=true;dbUpsertMem(m).then(()=>render());}}
+
+//==========================================================
+// 使い方
+//==========================================================
+function renderGuideView(){
+  const base=location.origin+location.pathname;
+  return `
+  <div class="card" style="max-width:860px;">
+    <h2 style="font-size:20px;font-weight:700;margin:0 0 12px;">使い方</h2>
+    <div class="disclaimer" style="margin-bottom:16px;">${DISCLAIMER_JA} 「合否」や「予測」のために使わず、面接で確認する観点を整理するために使ってください。</div>
+    <h3 style="font-size:15px;margin:16px 0 6px;">1. 候補者に回答してもらう</h3>
+    <ul style="font-size:13px;line-height:1.9;padding-left:20px;margin:0;">
+      <li>ミャンマー人材: <code>${esc(base)}?mode=quiz&lang=my</code></li>
+      <li>インドネシア人材: <code>${esc(base)}?mode=quiz&lang=id</code></li>
+      <li>言語を候補者に選ばせる場合: <code>${esc(base)}?mode=quiz</code></li>
+      <li>67問、15〜20分。各問に制限時間（通常15秒、生活と働き方20秒、即答8秒）があります。</li>
+      <li>送信に失敗した場合、候補者の画面に「送信コード」が出ます。受け取ったコードは右上の「コード読込」で取り込めます。</li>
+    </ul>
+    <h3 style="font-size:15px;margin:16px 0 6px;">2. 結果の見方</h3>
+    <ul style="font-size:13px;line-height:1.9;padding-left:20px;margin:0;">
+      <li><strong>7項目（10点満点）</strong>: 定着プラン向きの5項目（日勤安定、仕送り整合、寒冷適応、協力・責任、同じ職場で長く）と、訪問系ルートの2項目（稼ぎたい意欲、キャリア志向）。5点が中立です。</li>
+      <li><strong>目安</strong>: 「定着プラン向き」「訪問系ルート向き」「どちらとも言えない」の3つ。判定の根拠を必ず併記しています。</li>
+      <li><strong>回答の一貫性</strong>: 逆の意味になる質問の組み合わせ${CONSISTENCY.length}組を照合し、矛盾の数で高・中・低を表示します。低い場合は目安を保留し、面接での確認を優先してください。</li>
+      <li><strong>面接で確かめたい点</strong>: 矛盾した回答と、点数が低い定着項目から最大3つを自動で挙げます。</li>
+      <li><strong>14特性・注意点・深層動機</strong>: 従来の介護性格診断と同じ指標です。</li>
+      <li><strong>受検履歴</strong>: 同じ氏名で複数回受検した場合、詳細画面に履歴表と前回との差を表示します。在籍中の2期生の再受検にも使えます。</li>
+    </ul>
+    <h3 style="font-size:15px;margin:16px 0 6px;">3. 既存メンバーと相性</h3>
+    <ul style="font-size:13px;line-height:1.9;padding-left:20px;margin:0;">
+      <li>在籍者が受検した結果は、詳細画面の「既存メンバーとして登録」で相性計算の基準に取り込めます。</li>
+      <li>相性は14特性の近さに、情緒・飲酒・衝動性などの組み合わせ補正を加えて算出します。</li>
+    </ul>
+    <h3 style="font-size:15px;margin:16px 0 6px;">4. レポートの印刷</h3>
+    <ul style="font-size:13px;line-height:1.9;padding-left:20px;margin:0;">
+      <li>詳細画面の「診断結果レポートを印刷 / PDF」からブラウザの印刷画面を開き、PDFとして保存できます。</li>
+      <li>「回答一覧も印刷する」にチェックを入れると、67問の回答も含めて出力します。</li>
+    </ul>
+    <h3 style="font-size:15px;margin:16px 0 6px;">5. データと安全</h3>
+    <ul style="font-size:13px;line-height:1.9;padding-left:20px;margin:0;">
+      <li>回答は共有データベース（Supabase）に保存され、ログインした担当者だけが閲覧できます。候補者側は自分の回答の送信だけができます。</li>
+      <li>候補者の氏名・連絡先・回答は個人情報です。レポートの共有先はノアコンツェル様の採用担当者に限定してください。</li>
+    </ul>
+  </div>`;
+}
+
+//==========================================================
+// 設定・候補者URL・コード読込・書出
+//==========================================================
+function openSettings(){
+  const html=`<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="card" style="max-width:520px;width:100%;" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 4px;font-size:18px;font-weight:700;">設定</h3>
+    <div style="margin:14px 0;"><label class="label">担当者名（編集履歴に表示）</label><input class="input" id="set-user" value="${esc(settings.userName||'')}"></div>
+    <div style="background:#F9FAFB;padding:10px;border-radius:6px;margin-bottom:14px;font-size:11px;color:#4B5563;line-height:1.6;">
+      <strong>接続先:</strong> ${esc(CONFIG.SUPABASE_URL)}<br>
+      <strong>テーブル:</strong> ${CONFIG.TABLE_SUB} / ${CONFIG.TABLE_MEM}<br>
+      <strong>ログイン:</strong> ${esc(settings.adminEmail||'')}<br>
+      <strong>最終取得:</strong> ${sync.lastPullAt?sync.lastPullAt.toLocaleString('ja-JP'):'未取得'}${sync.error?'<br><span style="color:#DC2626;">エラー: '+esc(sync.error)+'</span>':''}
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-secondary" style="flex:1;" onclick="this.closest('.modal-bg').remove()">キャンセル</button>
+      <button class="btn-primary" style="flex:2;" onclick="saveSettingsFromForm()">保存</button>
+    </div>
+    <details style="margin-top:14px;"><summary style="cursor:pointer;font-size:12px;color:#6B7280;">詳細</summary>
+      <div style="font-size:11px;color:#4B5563;line-height:1.6;padding:8px 0 0;">
+        <p>端末内のキャッシュを消して共有DBから再取得します（共有DBのデータは消えません）。</p>
+        <button class="btn-secondary btn-danger" style="font-size:11px;padding:6px 10px;" onclick="if(confirm('端末内キャッシュを削除して再取得しますか？'))resetLocal()">キャッシュ削除</button>
+      </div></details>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function saveSettingsFromForm(){const name=document.getElementById('set-user').value.trim();if(!name){alert('お名前を入力してください');return;}settings.userName=name;saveSettings();document.querySelector('.modal-bg').remove();render();}
+function resetLocal(){localStorage.removeItem(STORAGE_KEY);state={submissions:[],members:[]};document.querySelector('.modal-bg').remove();syncPull().then(()=>render());}
+function openCandidateLink(){
+  const base=location.origin+location.pathname;
+  const row=(label,url)=>`<div style="margin-bottom:12px;"><label class="label">${label}</label><div style="display:flex;gap:6px;"><input class="input" readonly value="${url}" style="font-size:12px;padding:10px;" onclick="this.select()"><button class="btn-secondary btn-sm" onclick="navigator.clipboard.writeText('${url}');this.textContent='コピー済'">コピー</button></div></div>`;
+  const html=`<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="card" style="max-width:520px;width:100%;" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 12px;">候補者URL</h3>
+    <p style="font-size:12px;color:#6B7280;margin:0 0 10px;">候補者の言語に合わせたURLを Viber / WhatsApp で送ってください。</p>
+    ${row('ミャンマー人材（ビルマ語＋日本語）',base+'?mode=quiz&lang=my')}
+    ${row('インドネシア人材（インドネシア語＋日本語）',base+'?mode=quiz&lang=id')}
+    ${row('言語を候補者に選ばせる',base+'?mode=quiz')}
+    <button class="btn-secondary btn-block" style="margin-top:4px;" onclick="this.closest('.modal-bg').remove()">閉じる</button>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+function showImportCode(){
+  const html=`<div class="modal-bg" onclick="if(event.target===this)this.remove()"><div class="card" style="max-width:520px;width:100%;" onclick="event.stopPropagation()">
+    <h3 style="margin:0 0 12px;">送信コード読込</h3>
+    <p style="font-size:12px;color:#6B7280;margin:0 0 10px;">候補者から受け取った送信コードを貼り付けてください。</p>
+    <textarea class="textarea" id="import-code" rows="6" placeholder="ここにコードを貼り付け" style="font-family:monospace;font-size:11px;"></textarea>
+    <button class="btn-primary btn-block" style="margin-top:10px;" onclick="importCode()">読込</button>
+    <button class="btn-secondary btn-block" style="margin-top:8px;" onclick="this.closest('.modal-bg').remove()">閉じる</button>
+  </div></div>`;
+  document.body.insertAdjacentHTML('beforeend',html);
+}
+async function importCode(){
+  const code=document.getElementById('import-code').value.trim();
+  if(!code){alert('コードを入力してください');return;}
+  try{
+    const p=JSON.parse(decodeURIComponent(escape(atob(code))));
+    if(!p.n||!p.a)throw new Error('invalid');
+    const s={id:uuid(),submittedAt:p.t||nowIso(),name:p.n,contact:p.c||'',lang:p.l||'',candidateKey:normalizeName(p.n),answers:p.a,timing:p.ti||{},deleted:false};
+    state.submissions.push(s);await dbUpsertSub(s);
+    document.querySelector('.modal-bg').remove();setView('list');alert('読込完了: '+p.n);
+  }catch(e){alert('コードの形式が不正です: '+e.message);}
+}
+function deleteSubmission(id){
+  if(!confirm('この提出を削除しますか？（共有DBでは削除済みの印が付き、一覧から消えます）'))return;
+  const s=state.submissions.find(x=>x.id===id);
+  if(s){s.deleted=true;dbUpsertSub(s).then(()=>{setView('list');});}
+}
+function exportJSON(){
+  const blob=new Blob([JSON.stringify({exportedAt:nowIso(),submissions:activeSubs(),members:activeMembers()},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='noah-kaigo-export-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
+}
+
+//==========================================================
+// チャート
+//==========================================================
+function initCharts(){
+  document.querySelectorAll('canvas[data-scores]').forEach(c=>{
+    if(c._chart)c._chart.destroy();
+    const kind=c.dataset.kind||'traits';
+    const dict=kind==='fit'?FIT:TRAITS;
+    const scores=JSON.parse(c.dataset.scores);
+    const keys=Object.keys(dict);
+    const labels=keys.map(k=>kind==='fit'?dict[k].short:dict[k].ja);
+    const data=keys.map(k=>scores[k]??5);
+    const datasets=[{label:'今回',data,backgroundColor:kind==='fit'?'rgba(59,130,246,.18)':'rgba(42,157,143,.2)',borderColor:kind==='fit'?'#3B82F6':'#2A9D8F',borderWidth:2,pointBackgroundColor:kind==='fit'?'#3B82F6':'#2A9D8F',pointRadius:3}];
+    if(c.dataset.prev){const pv=JSON.parse(c.dataset.prev);datasets.push({label:'前回',data:keys.map(k=>pv[k]??5),backgroundColor:'rgba(156,163,175,.08)',borderColor:'#9CA3AF',borderWidth:1.5,borderDash:[4,3],pointRadius:2,pointBackgroundColor:'#9CA3AF'});}
+    c._chart=new Chart(c,{type:'radar',data:{labels,datasets},
+      options:{responsive:true,maintainAspectRatio:false,animation:false,plugins:{legend:{display:datasets.length>1,labels:{font:{size:10}}}},
+        scales:{r:{min:0,max:10,beginAtZero:true,ticks:{stepSize:2,backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:kind==='fit'?11:10}}}}}});
+  });
+}
+function esc(s){if(s==null)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+//==========================================================
+// 起動
+//==========================================================
+(async function boot(){
+  if(LANG)document.documentElement.lang=LANG;
+  if(MODE==='admin'&&sb){
+    try{const {data}=await sb.auth.getSession();sbSession=data.session||null;}catch(e){console.warn(e);}
+    sb.auth.onAuthStateChange((_e,session)=>{sbSession=session;if(!session&&MODE==='admin'&&!document.hidden){/* トークン失効時はログイン画面へ */render();}});
+  }
+  render();
+  if(MODE==='admin'&&isLoggedIn()){await syncPull(true);render();}
+})();
+</script>
+</body>
+</html>
