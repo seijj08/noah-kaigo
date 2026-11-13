@@ -38,8 +38,9 @@
 ### 管理用アカウントの発行（初回のみ・Supabase ダッシュボード）
 1. Authentication ▸ Users ▸ Add user ▸ Create new user
 2. メールと任意のパスワードを入力（このパスワードを「PIN」として担当者に共有）。「Auto Confirm User」をON。
-3. 共有アカウント1つで運用できます。担当者ごとに分けたい場合は複数作成してください。
-4. Authentication ▸ Providers ▸ Email の「Allow new users to sign up」は OFF のままにします。
+3. 同じメールを `sql/03_admins.sql` の insert に追加して SQL Editor で実行します（noah_admins に登録したメールだけが noah_ テーブルを読み書きできます。このSupabaseは他アプリと共用のため、ログイン済みというだけでは閲覧できないようにしてあります）。
+4. 共有アカウント1つで運用できます。担当者ごとに分けたい場合は複数作成し、それぞれ noah_admins にも登録してください。
+5. Authentication ▸ Providers ▸ Email の「Allow new users to sign up」は OFF のままにします。
 
 ## 3. 採点の考え方
 
@@ -102,7 +103,7 @@ Q("q49","10",{ja:"日本語の質問文",my:"ビルマ語",id:"インドネシ�
 ## 5. データと安全
 
 - 保存先: Supabase プロジェクト `klwmsyxxtmhxrsgstpen`（他アプリと共用）。テーブルは `noah_submissions` と `noah_members`。
-- RLS: 未ログイン（候補者）は `noah_submissions` への INSERT のみ。読み取りは管理者ログイン後のみ。SQL は `sql/01_schema.sql` → `sql/02_rls.sql` の順に実行済み。
+- RLS: 未ログイン（候補者）は `noah_submissions` への INSERT のみ。読み取り・更新は `noah_admins` に登録したメールでログインした管理者のみ。SQL は `sql/01_schema.sql` → `sql/02_rls.sql` → `sql/03_admins.sql` の順に実行済み。
 - `index.html` に書いてあるのは公開用の Publishable（anon）キーだけです。service_role / secret キーは絶対に書かないでください。
 - 候補者の氏名・連絡先・回答は個人情報です。画面例や README には架空の名前だけを使い、レポートの共有先はノアコンツェル様の採用担当者に限定してください。
 - 削除は論理削除（`deleted=true`）です。復旧が必要な場合は Supabase の Table Editor で `deleted` を戻してください。
@@ -114,6 +115,7 @@ Q("q49","10",{ja:"日本語の質問文",my:"ビルマ語",id:"インドネシ�
 | `index.html` | アプリ本体（候補者画面・管理画面・採点・レポート） |
 | `sql/01_schema.sql` | テーブル定義 |
 | `sql/02_rls.sql` | アクセス制御（RLS） |
+| `sql/03_admins.sql` | 管理者メールの許可リスト（noah_admins）と管理者ポリシー |
 | `docs/questions-translation.md` | 追加質問の3言語一覧・翻訳の確認状況 |
 
 ## 7. 表示上の決まり
